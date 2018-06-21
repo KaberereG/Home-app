@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "451051862496",
+    "firebase_url": "https://homeapp2-a5db1.firebaseio.com",
+    "project_id": "homeapp2-a5db1",
+    "storage_bucket": "homeapp2-a5db1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451051862496:android:c3b7958ecdb7cc16",
+        "android_client_info": {
+          "package_name": "com.example.waithera.homeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451051862496-d0qick1i9na27c6ri6dv4nqe7vtvd7cn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.waithera.homeapp",
+            "certificate_hash": "14a299da6c5eeb4fc6d623ecb0c24959f0018849"
+          }
+        },
+        {
+          "client_id": "451051862496-8c6j1qhdnn81edq8gm8sdq28ai9tc31p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa3NcTTCZVaXn-JtK_zaN-ogeqhlF_5HA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451051862496-8c6j1qhdnn81edq8gm8sdq28ai9tc31p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
