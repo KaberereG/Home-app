@@ -6,9 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.example.waithera.homeapp.Plumber_view">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search using location"
+        android:background="@drawable/editshape"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/searchPlumber" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/searchPlumber"
         android:id="@+id/plumber_list">
 
     </android.support.v7.widget.RecyclerView>

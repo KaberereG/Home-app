@@ -106,7 +106,18 @@
         android:text="Charges"
         android:layout_margin="5dp"
         android:id="@+id/textCharges"/>
+
+
 </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Message"
+        android:background="@drawable/background_signup"
+        android:layout_gravity="right"
+        android:id="@+id/message"
+        />
+
 
 </LinearLayout>
 </android.support.v7.widget.CardView>
