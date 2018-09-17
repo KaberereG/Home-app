@@ -27,11 +27,12 @@ import java.util.ArrayList;
 public class NannyView extends AppCompatActivity {
     private RecyclerView mNannyList;
     private DatabaseReference mDatabase;
+
     //implementing search
     EditText search_edit_text;
     // RecyclerView recyclerView;
     DatabaseReference databaseReference;
-    FirebaseUser firebaseUser;
+    FirebaseUser firebaseUser,userOne,userTwo;
     ArrayList<String> fullNameList;
     ArrayList<String> phoneNumberList;
     ArrayList<String> locationList;
@@ -107,13 +108,7 @@ public class NannyView extends AppCompatActivity {
             }
         });
         message=(Button)findViewById(R.id.message);
-       /* message.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent message= new Intent(NannyView.this,Chat.class);
-                startActivity(message);
-            }
-        });*/
+
     }
 
     @Override
@@ -127,6 +122,8 @@ public class NannyView extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(Plumber_view.PlumberViewHolder viewHolder, PlumberClass model, int position) {
+               final String post_key=getRef(position).getKey().toString();
+
                 viewHolder.setFullName(model.getFullname());
                 viewHolder.setNumber(model.getWorkernumber());
                 viewHolder.setLocation(model.getLocation());
@@ -134,6 +131,14 @@ public class NannyView extends AppCompatActivity {
                 viewHolder.setEmployer(model.getPreviousemployer());
                 viewHolder.setCharges(model.getCharge());
 
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent singleNannyActivity= new Intent(NannyView.this,Chat.class);
+                        singleNannyActivity.putExtra("Postid",post_key);
+                        startActivity(singleNannyActivity);
+                    }
+                });
 
             }
         };
@@ -142,7 +147,7 @@ public class NannyView extends AppCompatActivity {
     }
 
     public static class PlumberViewHolder extends RecyclerView.ViewHolder{
-        View mView;
+       View mView;
         public PlumberViewHolder(View itemView){
             super(itemView);
             mView=itemView;
@@ -176,6 +181,8 @@ public class NannyView extends AppCompatActivity {
     }
     //search
     private void setAdapter(final String searchedString){
+        userOne=FirebaseAuth.getInstance().getCurrentUser();
+
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -190,12 +197,15 @@ public class NannyView extends AppCompatActivity {
                 int counter=0;
 
                 for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+
                     String full_name=snapshot.child("username").getValue(String.class);
                     String phone_number=snapshot.child("workernumber").getValue(String.class);
                     String location=snapshot.child("location").getValue(String.class);
                     String experience=snapshot.child("experience").getValue(String.class);
                     String employer=snapshot.child("previousemployer").getValue(String.class);
                     String charge=snapshot.child("charge").getValue(String.class);
+
+
 
                     if(location.contains(searchedString)){
                         fullNameList.add(full_name);

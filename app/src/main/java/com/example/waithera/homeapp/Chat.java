@@ -19,7 +19,11 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import  android.text.format.DateFormat;
 
@@ -27,6 +31,8 @@ public class Chat extends AppCompatActivity {
 private static int SIGN_IN_REQUEST_CODE=1;
 private FirebaseListAdapter<ChatMessage> adapter;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference mDatabase;
+    private String post_key = null;
     RelativeLayout activity_chat;
     FloatingActionButton fab;
 
@@ -71,14 +77,18 @@ getMenuInflater().inflate(R.menu.menu,menu);
         setContentView(R.layout.activity_chat);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        mDatabase= FirebaseDatabase.getInstance().getReference().child("NannyDetails");
+        post_key = getIntent().getExtras().getString("Postid");
 
         activity_chat=(RelativeLayout)findViewById(R.id.activity_chat);
         fab=(FloatingActionButton)findViewById(R.id.fab);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText input=(EditText)findViewById(R.id.input);
-                FirebaseDatabase.getInstance().getReference().push().setValue(new ChatMessage(input.getText().toString(),
+                FirebaseDatabase.getInstance().getReference().child("Chat").push().setValue(new ChatMessage(input.getText().toString(),
                        firebaseAuth.getCurrentUser().getEmail()));
                 input.setText("");
             }
@@ -109,10 +119,15 @@ adapter=new FirebaseListAdapter<ChatMessage>(this,ChatMessage.class,R.layout.lis
     @Override
     protected void populateView(View v, ChatMessage model, int position) {
 //Get references to the views of list_items
-        TextView messageText,messageUser,messageTime;
+        final TextView messageText,messageUser,messageTime;
         messageText=(TextView)v.findViewById(R.id.message_text);
         messageUser=(TextView)v.findViewById(R.id.message_user);
         messageTime=(TextView)v.findViewById(R.id.message_time);
+
+
+        //get the user who sent the post
+        String post_key = getIntent().getExtras().getString("Postid");
+
 
     messageText.setText(model.getMessageText());
     messageUser.setText(model.getMessgeUser());

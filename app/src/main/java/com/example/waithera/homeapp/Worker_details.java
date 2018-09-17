@@ -110,7 +110,7 @@ public class Worker_details extends AppCompatActivity{
                               public void onComplete(@NonNull Task<Void> task) {
 
                                   if(task.isSuccessful()){
-                                      Intent login=new Intent(Worker_details.this,Login.class);
+                                      Intent login=new Intent(Worker_details.this,Chat.class);
                                       startActivity(login);
                                   }
                               }

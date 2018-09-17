@@ -114,12 +114,22 @@ if(!s.toString().isEmpty()){
         ) {
             @Override
             protected void populateViewHolder(PlumberViewHolder viewHolder, PlumberClass model, int position) {
+                final String post_key=getRef(position).getKey().toString();
                 viewHolder.setFullName(model.getFullname());
                 viewHolder.setNumber(model.getWorkernumber());
                 viewHolder.setLocation(model.getLocation());
                 viewHolder.setExperience(model.getExperience());
                 viewHolder.setEmployer(model.getPreviousemployer());
                 viewHolder.setCharges(model.getCharge());
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent singleNannyActivity= new Intent(Plumber_view.this,Chat.class);
+                        singleNannyActivity.putExtra("Postid",post_key);
+                        startActivity(singleNannyActivity);
+                    }
+                });
+
 
             }
         };
