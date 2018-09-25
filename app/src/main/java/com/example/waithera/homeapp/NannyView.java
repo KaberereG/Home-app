@@ -1,9 +1,9 @@
 package com.example.waithera.homeapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -25,8 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class NannyView extends AppCompatActivity {
-    private RecyclerView mNannyList;
-    private DatabaseReference mDatabase;
     //implementing search
     EditText search_edit_text;
     // RecyclerView recyclerView;
@@ -39,10 +37,10 @@ public class NannyView extends AppCompatActivity {
     ArrayList<String> employerList;
     ArrayList<String> chargeList;
     SearchAdapter searchAdapter;
-
     //Button
     Button message;
-
+    private RecyclerView mNannyList;
+    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -51,35 +49,35 @@ public class NannyView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nanny_view);
 
-        mNannyList=(RecyclerView)findViewById(R.id.plumber_list);
+        mNannyList = (RecyclerView) findViewById(R.id.plumber_list);
         mNannyList.setHasFixedSize(true);
         mNannyList.setLayoutManager(new LinearLayoutManager(this));
-        mDatabase= FirebaseDatabase.getInstance().getReference().child("NannyDetails");
-        mAuth=FirebaseAuth.getInstance();
-        mAuthListener=new FirebaseAuth.AuthStateListener() {
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("NannyDetails");
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()==null){
-                    Intent registerIntent= new Intent(NannyView.this,Employer_signup.class);
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Intent registerIntent = new Intent(NannyView.this, Employer_signup.class);
                     registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(registerIntent);
                 }
             }
         };
         //implementing search
-        search_edit_text=(EditText) findViewById(R.id.searchPlumber);
+        search_edit_text = (EditText) findViewById(R.id.searchPlumber);
         //recyclerView=(RecyclerView)findViewById(R.id.nanny_list);
-        firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //recyclerView.setHasFixedSize(true);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        fullNameList=new ArrayList<>();
-        phoneNumberList=new ArrayList<>();
-        locationList=new ArrayList<>();
-        experienceList=new ArrayList<>();
-        employerList=new ArrayList<>();
-        chargeList=new ArrayList<>();
+        fullNameList = new ArrayList<>();
+        phoneNumberList = new ArrayList<>();
+        locationList = new ArrayList<>();
+        experienceList = new ArrayList<>();
+        employerList = new ArrayList<>();
+        chargeList = new ArrayList<>();
         search_edit_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -93,9 +91,9 @@ public class NannyView extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().isEmpty()){
+                if (!s.toString().isEmpty()) {
                     setAdapter(s.toString());
-                }else {
+                } else {
                     fullNameList.clear();
                     phoneNumberList.clear();
                     locationList.clear();
@@ -106,7 +104,7 @@ public class NannyView extends AppCompatActivity {
                 }
             }
         });
-        message=(Button)findViewById(R.id.message);
+        message = (Button) findViewById(R.id.message);
        /* message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,9 +115,9 @@ public class NannyView extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<PlumberClass,Plumber_view.PlumberViewHolder> FBRA =new FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder>(
+        FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder> FBRA = new FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder>(
                 PlumberClass.class,
                 R.layout.plumber_row,
                 Plumber_view.PlumberViewHolder.class,
@@ -141,41 +139,8 @@ public class NannyView extends AppCompatActivity {
         mNannyList.setAdapter(FBRA);
     }
 
-    public static class PlumberViewHolder extends RecyclerView.ViewHolder{
-        View mView;
-        public PlumberViewHolder(View itemView){
-            super(itemView);
-            mView=itemView;
-
-        }
-
-        public void setFullName(String fullname){
-            TextView post_name=(TextView)mView.findViewById(R.id.textName);
-            post_name.setText(fullname);
-        }
-        public void setNumber(String workernumber ){
-            TextView post_number=(TextView)mView.findViewById(R.id.textNumber);
-            post_number.setText(workernumber);
-        }
-        public void setLocation(String location){
-            TextView post_location=(TextView)mView.findViewById(R.id.textLocation);
-            post_location.setText(location);
-        }
-        public void setExperience(String experience){
-            TextView post_experience=(TextView)mView.findViewById(R.id.textExperience);
-            post_experience.setText(experience);
-        }
-        public void setEmployer(String employer){
-            TextView post_employer=(TextView)mView.findViewById(R.id.textEmployer);
-            post_employer.setText(employer);
-        }
-        public void setCharges(String charge){
-            TextView post_charges=(TextView)mView.findViewById(R.id.textCharges);
-            post_charges.setText(charge);
-        }
-    }
     //search
-    private void setAdapter(final String searchedString){
+    private void setAdapter(final String searchedString) {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -187,17 +152,17 @@ public class NannyView extends AppCompatActivity {
                 chargeList.clear();
                 mNannyList.removeAllViews();
 
-                int counter=0;
+                int counter = 0;
 
-                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                    String full_name=snapshot.child("username").getValue(String.class);
-                    String phone_number=snapshot.child("workernumber").getValue(String.class);
-                    String location=snapshot.child("location").getValue(String.class);
-                    String experience=snapshot.child("experience").getValue(String.class);
-                    String employer=snapshot.child("previousemployer").getValue(String.class);
-                    String charge=snapshot.child("charge").getValue(String.class);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String full_name = snapshot.child("username").getValue(String.class);
+                    String phone_number = snapshot.child("workernumber").getValue(String.class);
+                    String location = snapshot.child("location").getValue(String.class);
+                    String experience = snapshot.child("experience").getValue(String.class);
+                    String employer = snapshot.child("previousemployer").getValue(String.class);
+                    String charge = snapshot.child("charge").getValue(String.class);
 
-                    if(location.contains(searchedString)){
+                    if (location.contains(searchedString)) {
                         fullNameList.add(full_name);
                         phoneNumberList.add(phone_number);
                         locationList.add(location);
@@ -206,11 +171,11 @@ public class NannyView extends AppCompatActivity {
                         chargeList.add(charge);
                         counter++;
                     }
-                    if(counter==15)
+                    if (counter == 15)
                         break;
 
                 }
-                searchAdapter=new SearchAdapter(NannyView.this,fullNameList,phoneNumberList,locationList,experienceList,employerList,chargeList);
+                searchAdapter = new SearchAdapter(NannyView.this, fullNameList, phoneNumberList, locationList, experienceList, employerList, chargeList);
                 mNannyList.setAdapter(searchAdapter);
             }
 
@@ -219,5 +184,45 @@ public class NannyView extends AppCompatActivity {
 
             }
         });
+    }
+
+    public static class PlumberViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+
+        public PlumberViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+
+        }
+
+        public void setFullName(String fullname) {
+            TextView post_name = (TextView) mView.findViewById(R.id.textName);
+            post_name.setText(fullname);
+        }
+
+        public void setNumber(String workernumber) {
+            TextView post_number = (TextView) mView.findViewById(R.id.textNumber);
+            post_number.setText(workernumber);
+        }
+
+        public void setLocation(String location) {
+            TextView post_location = (TextView) mView.findViewById(R.id.textLocation);
+            post_location.setText(location);
+        }
+
+        public void setExperience(String experience) {
+            TextView post_experience = (TextView) mView.findViewById(R.id.textExperience);
+            post_experience.setText(experience);
+        }
+
+        public void setEmployer(String employer) {
+            TextView post_employer = (TextView) mView.findViewById(R.id.textEmployer);
+            post_employer.setText(employer);
+        }
+
+        public void setCharges(String charge) {
+            TextView post_charges = (TextView) mView.findViewById(R.id.textCharges);
+            post_charges.setText(charge);
+        }
     }
 }

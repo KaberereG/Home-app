@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,14 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Fill in form with your details:"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/fullname"
             android:layout_width="wrap_content"
@@ -25,14 +24,15 @@
             android:layout_marginTop="25dp"
             android:text="Full name:"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/workerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/editshape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/editshape"
             android:inputType="textPersonName"
             android:padding="5dp" />
 
@@ -44,14 +44,15 @@
             android:layout_marginTop="20dp"
             android:text="Phone number:"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/workerNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/editshape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/editshape"
             android:padding="5dp" />
 
 
@@ -62,14 +63,15 @@
             android:layout_marginTop="20dp"
             android:text="Location:"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/workerLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/editshape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/editshape"
             android:inputType="textPersonName"
             android:padding="5dp" />
 
@@ -80,14 +82,15 @@
             android:layout_marginTop="20dp"
             android:text="Work experience:"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/workExperience"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/editshape"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/editshape"
             android:inputType="textPersonName"
             android:padding="10dp" />
 
@@ -98,13 +101,14 @@
             android:layout_marginTop="20dp"
             android:text="Previous employer contact:"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/workerPrevEmployer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/editshape"
             android:ems="10"
             android:inputType="textPersonName"
@@ -124,11 +128,11 @@
             android:id="@+id/charges"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/editshape"
-            android:inputType="textPersonName"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/editshape"
+            android:inputType="textPersonName"
             android:padding="5dp" />
 
         <Button
@@ -137,12 +141,11 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:background="@drawable/background_signup"
-            android:text="Submit"
             android:onClick="submitButtonClicked"
-            android:textSize="30sp"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:text="Submit"
+            android:textSize="30sp" />
     </LinearLayout>
-
 
 
 </ScrollView>

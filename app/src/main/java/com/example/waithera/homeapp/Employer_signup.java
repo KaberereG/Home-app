@@ -2,9 +2,9 @@ package com.example.waithera.homeapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -29,89 +29,88 @@ public class Employer_signup extends AppCompatActivity implements View.OnClickLi
 
     private FirebaseAuth mfirebaseAuth;
     private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employer_signup);
 
-        mfirebaseAuth=FirebaseAuth.getInstance();
-        mDatabase= FirebaseDatabase.getInstance().getReference().child("Employers");
+        mfirebaseAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Employers");
 
-        if(mfirebaseAuth.getCurrentUser() !=null ){
+        if (mfirebaseAuth.getCurrentUser() != null) {
             //start the login activity
             finish();
-            startActivity(new Intent(getApplicationContext(),Login.class));
+            startActivity(new Intent(getApplicationContext(), Login.class));
         }
 
-        progressDialog=new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
 
-        username=(EditText)findViewById(R.id.name);
-        email=(EditText)findViewById(R.id.username);
-        password=(EditText)findViewById(R.id.password);
+        username = (EditText) findViewById(R.id.name);
+        email = (EditText) findViewById(R.id.username);
+        password = (EditText) findViewById(R.id.password);
 
 
-        register=(Button)findViewById(R.id.register);
-        back=(Button)findViewById(R.id.back);
+        register = (Button) findViewById(R.id.register);
+        back = (Button) findViewById(R.id.back);
 
         register.setOnClickListener(this);
         back.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View v) {
-        if(v==register){
+        if (v == register) {
             registerUser();
         }
-        if(v==back){
+        if (v == back) {
             finish();
-            Intent i=new Intent(this,MainActivity.class);
+            Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         }
     }
-    public void registerUser(){
-        final String emaiL=email.getText().toString().trim();
-        final String userName=username.getText().toString().trim();
-        String passWord=password.getText().toString().trim();
-        if(TextUtils.isEmpty(userName)){
-            Toast.makeText(this,"Please enter your user name",Toast.LENGTH_SHORT).show();
+
+    public void registerUser() {
+        final String emaiL = email.getText().toString().trim();
+        final String userName = username.getText().toString().trim();
+        String passWord = password.getText().toString().trim();
+        if (TextUtils.isEmpty(userName)) {
+            Toast.makeText(this, "Please enter your user name", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(emaiL)){
-            Toast.makeText(this,"Please enter valid email",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(emaiL)) {
+            Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(passWord)){
-            Toast.makeText(this,"Please enter password that has 8 characters",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(passWord)) {
+            Toast.makeText(this, "Please enter password that has 8 characters", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
-
 
 
         progressDialog.setMessage("Registering User...");
         progressDialog.show();
 
-        mfirebaseAuth.createUserWithEmailAndPassword(emaiL,passWord)
+        mfirebaseAuth.createUserWithEmailAndPassword(emaiL, passWord)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            String user_id=mfirebaseAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db=mDatabase.child(user_id);
+                        if (task.isSuccessful()) {
+                            String user_id = mfirebaseAuth.getCurrentUser().getUid();
+                            DatabaseReference current_user_db = mDatabase.child(user_id);
                             current_user_db.child("email").setValue(emaiL);
                             current_user_db.child("username").setValue(userName);
                             current_user_db.child("image").setValue("default");
 
-                            Toast.makeText(Employer_signup.this,"Registered Succesfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Employer_signup.this, "Registered Succesfully", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
 
                             finish();
-                            Intent loginIntent=new Intent(getApplicationContext(),Login_employer.class);
+                            Intent loginIntent = new Intent(getApplicationContext(), Login_employer.class);
                             loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(loginIntent);
-                        }
-                        else{
-                            Toast.makeText(Employer_signup.this,"Could not register...Please try again. Ensure valid email and 8 character long password",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(Employer_signup.this, "Could not register...Please try again. Ensure valid email and 8 character long password", Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
 
                         }

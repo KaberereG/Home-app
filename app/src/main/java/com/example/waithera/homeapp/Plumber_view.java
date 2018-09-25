@@ -50,57 +50,57 @@ public class Plumber_view extends AppCompatActivity {
         mPlumberList.setHasFixedSize(true);
         mPlumberList.setLayoutManager(new LinearLayoutManager(this));
         mDatabase = FirebaseDatabase.getInstance().getReference().child("PlumberDetails");
-        mAuth=FirebaseAuth.getInstance();
-        mAuthListener=new FirebaseAuth.AuthStateListener() {
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()==null){
-                    Intent registerIntent= new Intent(Plumber_view.this,Employer_signup.class);
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Intent registerIntent = new Intent(Plumber_view.this, Employer_signup.class);
                     registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(registerIntent);
                 }
             }
         };
         //implementing search
-        search_edit_text=(EditText) findViewById(R.id.searchPlumber);
+        search_edit_text = (EditText) findViewById(R.id.searchPlumber);
         //recyclerView=(RecyclerView)findViewById(R.id.nanny_list);
-        firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //recyclerView.setHasFixedSize(true);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        fullNameList=new ArrayList<>();
-        phoneNumberList=new ArrayList<>();
-        locationList=new ArrayList<>();
-        experienceList=new ArrayList<>();
-        employerList=new ArrayList<>();
-        chargeList=new ArrayList<>();
-search_edit_text.addTextChangedListener(new TextWatcher() {
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        fullNameList = new ArrayList<>();
+        phoneNumberList = new ArrayList<>();
+        locationList = new ArrayList<>();
+        experienceList = new ArrayList<>();
+        employerList = new ArrayList<>();
+        chargeList = new ArrayList<>();
+        search_edit_text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    }
+            }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-    }
+            }
 
-    @Override
-    public void afterTextChanged(Editable s) {
-if(!s.toString().isEmpty()){
-    setAdapter(s.toString());
-}else {
-    fullNameList.clear();
-    phoneNumberList.clear();
-    locationList.clear();
-    experienceList.clear();
-    employerList.clear();
-    chargeList.clear();
-    mPlumberList.removeAllViews();
-}
-    }
-});
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().isEmpty()) {
+                    setAdapter(s.toString());
+                } else {
+                    fullNameList.clear();
+                    phoneNumberList.clear();
+                    locationList.clear();
+                    experienceList.clear();
+                    employerList.clear();
+                    chargeList.clear();
+                    mPlumberList.removeAllViews();
+                }
+            }
+        });
     }
 
     @Override
@@ -125,6 +125,53 @@ if(!s.toString().isEmpty()){
         };
 
         mPlumberList.setAdapter(FBRA);
+    }
+
+    //search
+    private void setAdapter(final String searchedString) {
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                fullNameList.clear();
+                phoneNumberList.clear();
+                locationList.clear();
+                experienceList.clear();
+                employerList.clear();
+                chargeList.clear();
+                mPlumberList.removeAllViews();
+
+                int counter = 0;
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String full_name = snapshot.child("username").getValue(String.class);
+                    String phone_number = snapshot.child("workernumber").getValue(String.class);
+                    String location = snapshot.child("location").getValue(String.class);
+                    String experience = snapshot.child("experience").getValue(String.class);
+                    String employer = snapshot.child("previousemployer").getValue(String.class);
+                    String charge = snapshot.child("charge").getValue(String.class);
+
+                    if (location.contains(searchedString)) {
+                        fullNameList.add(full_name);
+                        phoneNumberList.add(phone_number);
+                        locationList.add(location);
+                        experienceList.add(experience);
+                        employerList.add(employer);
+                        chargeList.add(charge);
+                        counter++;
+                    }
+                    if (counter == 15)
+                        break;
+
+                }
+                searchAdapter = new SearchAdapter(Plumber_view.this, fullNameList, phoneNumberList, locationList, experienceList, employerList, chargeList);
+                mPlumberList.setAdapter(searchAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static class PlumberViewHolder extends RecyclerView.ViewHolder {
@@ -164,51 +211,5 @@ if(!s.toString().isEmpty()){
             post_charges.setText(charge);
         }
 
-    }
-    //search
-    private void setAdapter(final String searchedString){
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                fullNameList.clear();
-                phoneNumberList.clear();
-                locationList.clear();
-                experienceList.clear();
-                employerList.clear();
-                chargeList.clear();
-                mPlumberList.removeAllViews();
-
-                int counter=0;
-
-                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                    String full_name=snapshot.child("username").getValue(String.class);
-                String phone_number=snapshot.child("workernumber").getValue(String.class);
-                String location=snapshot.child("location").getValue(String.class);
-                String experience=snapshot.child("experience").getValue(String.class);
-                String employer=snapshot.child("previousemployer").getValue(String.class);
-                String charge=snapshot.child("charge").getValue(String.class);
-
-                if(location.contains(searchedString)){
-                    fullNameList.add(full_name);
-                    phoneNumberList.add(phone_number);
-                    locationList.add(location);
-                    experienceList.add(experience);
-                    employerList.add(employer);
-                    chargeList.add(charge);
-                    counter++;
-                }
-                if(counter==15)
-                    break;
-
-                }
-                searchAdapter=new SearchAdapter(Plumber_view.this,fullNameList,phoneNumberList,locationList,experienceList,employerList,chargeList);
-           mPlumberList.setAdapter(searchAdapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }

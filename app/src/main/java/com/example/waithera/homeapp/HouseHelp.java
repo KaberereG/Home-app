@@ -1,9 +1,9 @@
 package com.example.waithera.homeapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +27,7 @@ public class HouseHelp extends AppCompatActivity {
     private DatabaseReference databaseReference, mDatabaseUsers;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class HouseHelp extends AppCompatActivity {
 
 //instantiating database reference and firebase auth
         databaseReference = database.getInstance().getReference().child("HousehelpDetails");
-        mAuth=FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
 
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Workers").child(mCurrentUser.getUid());//reference to firebase database
@@ -50,6 +51,7 @@ public class HouseHelp extends AppCompatActivity {
 
         submit = (Button) findViewById(R.id.submit);
     }
+
     public void submitButtonClicked(View view) {
         final String workerN = workerName.getText().toString().trim();
         final String workerNo = workerNumber.getText().toString().trim();
@@ -84,10 +86,10 @@ public class HouseHelp extends AppCompatActivity {
             return;
         }
         //when all fields are filled action to take is submit
-        if(!TextUtils.isEmpty(workerN)&&!TextUtils.isEmpty(workerNo)&&!TextUtils.isEmpty(workerL)&&!TextUtils.isEmpty(workerE)&&!TextUtils.isEmpty(prevEmp)&&!TextUtils.isEmpty(charge)){
-            Toast.makeText(this,"Submitting...",Toast.LENGTH_LONG).show();
+        if (!TextUtils.isEmpty(workerN) && !TextUtils.isEmpty(workerNo) && !TextUtils.isEmpty(workerL) && !TextUtils.isEmpty(workerE) && !TextUtils.isEmpty(prevEmp) && !TextUtils.isEmpty(charge)) {
+            Toast.makeText(this, "Submitting...", Toast.LENGTH_LONG).show();
 
-            final DatabaseReference newPost=databaseReference.push();
+            final DatabaseReference newPost = databaseReference.push();
             mDatabaseUsers.addValueEventListener(new ValueEventListener() {
                 //how they shall ne
                 @Override
@@ -104,8 +106,8 @@ public class HouseHelp extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
-                            if(task.isSuccessful()){
-                                Intent login=new Intent(HouseHelp.this,Login.class);
+                            if (task.isSuccessful()) {
+                                Intent login = new Intent(HouseHelp.this, Login.class);
                                 startActivity(login);
                             }
                         }
@@ -117,9 +119,8 @@ public class HouseHelp extends AppCompatActivity {
 
                 }
             });
-        }
-        else{
-            Toast.makeText(HouseHelp.this,"Unable to upload",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(HouseHelp.this, "Unable to upload", Toast.LENGTH_LONG).show();
         }
 
 

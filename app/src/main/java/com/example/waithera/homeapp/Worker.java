@@ -5,8 +5,8 @@ package com.example.waithera.homeapp;
  */
 
 public class Worker {
-    private String fullname,phoneNumber,location,workExperience,
-    prevEmpContact,charges;
+    private String fullname, phoneNumber, location, workExperience,
+            prevEmpContact, charges;
 
     public Worker() {
     }
@@ -24,44 +24,44 @@ public class Worker {
         return fullname;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getWorkExperience() {
-        return workExperience;
-    }
-
-    public String getPrevEmpContact() {
-        return prevEmpContact;
-    }
-
-    public String getCharges() {
-        return charges;
-    }
-
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getWorkExperience() {
+        return workExperience;
     }
 
     public void setWorkExperience(String workExperience) {
         this.workExperience = workExperience;
     }
 
+    public String getPrevEmpContact() {
+        return prevEmpContact;
+    }
+
     public void setPrevEmpContact(String prevEmpContact) {
         this.prevEmpContact = prevEmpContact;
+    }
+
+    public String getCharges() {
+        return charges;
     }
 
     public void setCharges(String charges) {

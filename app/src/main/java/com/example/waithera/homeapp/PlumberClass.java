@@ -5,19 +5,20 @@ package com.example.waithera.homeapp;
  */
 
 public class PlumberClass {
-    private String fullname,workernumber,location,experience,previousemployer,charge,username;
-    public PlumberClass(){
+    private String fullname, workernumber, location, experience, previousemployer, charge, username;
+
+    public PlumberClass() {
 
     }
 
-    public PlumberClass(String name, String number, String location, String experience, String employer, String charge,String username) {
+    public PlumberClass(String name, String number, String location, String experience, String employer, String charge, String username) {
         this.fullname = name;
         this.workernumber = number;
         this.location = location;
         this.experience = experience;
         this.previousemployer = employer;
         this.charge = charge;
-        this.username=username;
+        this.username = username;
     }
 
     public void setName(String name) {
@@ -28,24 +29,12 @@ public class PlumberClass {
         this.workernumber = number;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setExperience(String experience) {
-        this.experience = experience;
-    }
-
     public void setEmployer(String employer) {
         this.previousemployer = employer;
     }
 
     public void setCharges(String charge) {
         this.charge = charge;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFullname() {
@@ -60,8 +49,16 @@ public class PlumberClass {
         return location;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getExperience() {
         return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
     }
 
     public String getPreviousemployer() {
@@ -71,8 +68,13 @@ public class PlumberClass {
     public String getCharge() {
         return charge;
     }
+
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
 
