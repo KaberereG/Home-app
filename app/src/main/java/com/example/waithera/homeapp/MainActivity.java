@@ -95,7 +95,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void userLogin() {
         String email = userName.getText().toString().trim();
-        String passWord = editTextPassword.getText().toString().trim();
+        // passwords can have trailing spaces
+        //String passWord = editTextPassword.getText().toString().trim();
+        String passWord = editTextPassword.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show();
@@ -117,11 +119,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (task.isSuccessful()) {
                             progressDialog.dismiss();
                             checkUserExists();
-                            /*
-                            if(!checkuserexists()){
-                            checkusersexists
-                            }
-                             */
                         } else {
                             Toast.makeText(MainActivity.this, "Ensure correct email and password", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
@@ -139,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (dataSnapshot.hasChild(user_id)) {
                     Intent loginIntent = new Intent(MainActivity.this, Login.class);
                     //loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    // use finish() to destroy this activity
                     startActivity(loginIntent);
                 }
             }
