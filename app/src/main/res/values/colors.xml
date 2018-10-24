@@ -8,5 +8,6 @@
     <color name="transparent">#00000000</color>
     <color name="gradientStart">#19AA8B</color>
     <color name="gradStop">#23A7DB</color>
+    <color name="black">#000000</color>
 
 </resources>

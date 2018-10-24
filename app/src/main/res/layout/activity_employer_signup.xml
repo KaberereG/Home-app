@@ -34,6 +34,7 @@
         android:layout_alignLeft="@+id/name"
         android:layout_alignStart="@+id/name"
         android:layout_marginBottom="18dp"
+        android:layout_marginTop="18dp"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/ic_action_user"
         android:drawableStart="@drawable/ic_action_user"
@@ -65,7 +66,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp"
-        android:text="Sign up as employer"
+        android:text="Register as an employer"
         android:textColor="#fff"
         android:textSize="30sp" />
 

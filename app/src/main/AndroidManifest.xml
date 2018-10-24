@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -32,7 +33,10 @@
         <activity android:name=".HouseHelpView" />
         <activity android:name=".Cleaner" />
         <activity android:name=".CleanerView" />
-        <activity android:name=".Chat"></activity>
+        <activity android:name=".Chat" />
+        <activity android:name=".ResetPassword" />
+        <activity android:name=".Other" />
+        <activity android:name=".OthersView"></activity>
     </application>
 
 </manifest>

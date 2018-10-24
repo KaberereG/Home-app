@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context="com.example.waithera.homeapp.Plumber">
+    tools:context="com.example.waithera.homeapp.Other">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,8 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/editshape"
-            android:padding="5dp"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"/>
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/middlename"
             android:layout_width="wrap_content"
@@ -45,8 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/editshape"
-            android:padding="5dp"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"/>
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/surname"
             android:layout_width="wrap_content"
@@ -61,8 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/editshape"
-            android:padding="5dp"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"/>
+            android:padding="5dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,20 +114,13 @@
             android:text="Citizenship:"
             android:textSize="18sp"
             />
-        <Spinner
-            android:id="@+id/spinner_two"
+        <EditText
+            android:id="@+id/citizenship"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            />
-
-        <!--<EditText-->
-            <!--android:id="@+id/citizenship"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="10dp"-->
-            <!--android:background="@drawable/editshape"-->
-            <!--android:padding="5dp"/>-->
+            android:background="@drawable/editshape"
+            android:padding="5dp"/>
 
 
         <TextView
@@ -174,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Duties:"
+            android:text="Duties/occupation:"
             android:textSize="18sp" />
         <EditText
             android:id="@+id/workExperience"
@@ -261,6 +251,5 @@
 
 
     </LinearLayout>
-
 
 </ScrollView>

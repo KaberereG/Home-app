@@ -23,25 +23,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Carpenter extends AppCompatActivity {
-    private EditText firstName,middleName,surName,workerNumber, workerLocation,ageN, citizenship,idNumber,workExperience,referee, prevEmployerContact, charges;
+public class Other extends AppCompatActivity {
+    private EditText workerName, middleName,surName,ageN, citizenship,idNumber,workerNumber, workerLocation, workExperience, prevEmployerContact,referee, charges;
     private Button submit;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference, mDatabaseUsers;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
 
-    //Spinner
+    //spinner
     private Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_carpenter);
-
-        firstName = (EditText) findViewById(R.id.firstName);
+        setContentView(R.layout.activity_other);
+        workerName = (EditText) findViewById(R.id.firstName);
         middleName=(EditText)findViewById(R.id.middleName);
         surName=(EditText)findViewById(R.id.surName);
         workerNumber = (EditText) findViewById(R.id.workerNumber);
@@ -53,10 +49,9 @@ public class Carpenter extends AppCompatActivity {
         citizenship=(EditText)findViewById(R.id.citizenship);
         idNumber=(EditText)findViewById(R.id.idNumber);
         referee=(EditText)findViewById(R.id.referee);
-
-//       //spinner
+//spinner
         spinner=(Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String> myAdaper=new ArrayAdapter<String>(Carpenter.this,
+        ArrayAdapter<String> myAdaper=new ArrayAdapter<String>(Other.this,
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.names));
 
         myAdaper.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -85,10 +80,8 @@ public class Carpenter extends AppCompatActivity {
             }
         });
 
-
-
 //instantiating database reference and firebase auth
-        databaseReference = database.getInstance().getReference().child("CarpenterDetails");
+        databaseReference = database.getInstance().getReference().child("OtherWorkersDetails");
         mAuth=FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
 
@@ -98,8 +91,7 @@ public class Carpenter extends AppCompatActivity {
         submit = (Button) findViewById(R.id.submit);
     }
     public void submitButtonClicked(View view) {
-       // final String workerN = workerName.getText().toString().trim();
-        final String firstN=firstName.getText().toString().trim();
+        final String workerN = workerName.getText().toString().trim();
         final String middleN=middleName.getText().toString().trim();
         final String surN=surName.getText().toString().trim();
         final String gender=spinner.getSelectedItem().toString().trim();
@@ -112,9 +104,7 @@ public class Carpenter extends AppCompatActivity {
         final String prevEmp = prevEmployerContact.getText().toString().trim();
         final String ref=referee.getText().toString().trim();
         final String charge = charges.getText().toString().trim();
-
-
-        if (TextUtils.isEmpty(firstN)) {
+        if (TextUtils.isEmpty(workerN)) {
             Toast.makeText(this, "Please enter your first name", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -142,7 +132,6 @@ public class Carpenter extends AppCompatActivity {
             Toast.makeText(this, "Please enter your citizenship", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (TextUtils.isEmpty(workerNo)) {
             Toast.makeText(this, "Please enter your number", Toast.LENGTH_SHORT).show();
             return;
@@ -153,12 +142,12 @@ public class Carpenter extends AppCompatActivity {
             return;
         }
         if (TextUtils.isEmpty(workerE)) {
-            Toast.makeText(this, "Please enter your duties in detail", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter your duties", Toast.LENGTH_SHORT).show();
             return;
 
         }
         if (TextUtils.isEmpty(prevEmp)) {
-            Toast.makeText(this, "Please enter your previous employer contact", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter your referee", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(ref)){
@@ -169,11 +158,8 @@ public class Carpenter extends AppCompatActivity {
             Toast.makeText(this, "Please enter how much you charge", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
-
         //when all fields are filled action to take is submit
-        if(!TextUtils.isEmpty(firstN)&&!TextUtils.isEmpty(middleN)&&!TextUtils.isEmpty(surN)&&!TextUtils.isEmpty(gender)&&!TextUtils.isEmpty(workerNo)&&!TextUtils.isEmpty(workerL)&&!TextUtils.isEmpty(workerE)&&!TextUtils.isEmpty(prevEmp)&&!TextUtils.isEmpty(charge)&&!TextUtils.isEmpty(age)&&!TextUtils.isEmpty(citizenS)&&!TextUtils.isEmpty(idN)&&!TextUtils.isEmpty(ref)){
+        if(!TextUtils.isEmpty(workerN)&&!TextUtils.isEmpty(middleN)&&!TextUtils.isEmpty(surN)&&!TextUtils.isEmpty(gender)&&!TextUtils.isEmpty(workerNo)&&!TextUtils.isEmpty(workerL)&&!TextUtils.isEmpty(workerE)&&!TextUtils.isEmpty(prevEmp)&&!TextUtils.isEmpty(charge)&&!TextUtils.isEmpty(age)&&!TextUtils.isEmpty(citizenS)&&!TextUtils.isEmpty(idN)&&!TextUtils.isEmpty(ref)){
             Toast.makeText(this,"Submitting...",Toast.LENGTH_LONG).show();
 
             final DatabaseReference newPost=databaseReference.push();
@@ -181,7 +167,7 @@ public class Carpenter extends AppCompatActivity {
                 //how they shall ne
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    newPost.child("firstname").setValue(firstN);
+                    newPost.child("firstname").setValue(workerN);
                     newPost.child("middlename").setValue(middleN);
                     newPost.child("surname").setValue(surN);
                     newPost.child("gender").setValue(gender);
@@ -201,12 +187,8 @@ public class Carpenter extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
 
                             if(task.isSuccessful()){
-                                Intent login=new Intent(Carpenter.this,Login.class);
+                                Intent login=new Intent(Other.this,Login.class);
                                 startActivity(login);
-                            }
-                            else{
-                                String message=task.getException().getMessage();
-                                Toast.makeText(Carpenter.this,"Error occured "+message,Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -219,7 +201,7 @@ public class Carpenter extends AppCompatActivity {
             });
         }
         else{
-            Toast.makeText(Carpenter.this,"Unable to upload",Toast.LENGTH_LONG).show();
+            Toast.makeText(Other.this,"Unable to upload",Toast.LENGTH_LONG).show();
         }
 
 

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,11 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class HouseHelpView extends AppCompatActivity {
-    private static final int CALL_PERMISSION_CODE = 23;
-    private RecyclerView mHouseHelpList;
-    private DatabaseReference mDatabase;
-
+public class OthersView extends AppCompatActivity {
     //implementing search
     EditText search_edit_text;
     // RecyclerView recyclerView;
@@ -49,25 +46,27 @@ public class HouseHelpView extends AppCompatActivity {
     ArrayList<String> employerList;
     ArrayList<String> refereeList;
     ArrayList<String> chargeList;
-    SearchAdapter searchAdapter;
 
+    SearchAdapter searchAdapter;
+    private RecyclerView mPlumberList;
+    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private static final int CALL_PERMISSION_CODE = 23;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_house_help_view);
-
-        mHouseHelpList=(RecyclerView)findViewById(R.id.plumber_list);
-        mHouseHelpList.setHasFixedSize(true);
-        mHouseHelpList.setLayoutManager(new LinearLayoutManager(this));
-        mDatabase= FirebaseDatabase.getInstance().getReference().child("HousehelpDetails");
+        setContentView(R.layout.activity_others_view);
+        mPlumberList = (RecyclerView) findViewById(R.id.plumber_list);
+        mPlumberList.setHasFixedSize(true);
+        mPlumberList.setLayoutManager(new LinearLayoutManager(this));
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("OtherWorkersDetails");
         mAuth=FirebaseAuth.getInstance();
         mAuthListener=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()==null){
-                    Intent registerIntent= new Intent(HouseHelpView.this,Employer_signup.class);
+                    Intent registerIntent= new Intent(OthersView.this,Employer_signup.class);
                     registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(registerIntent);
                 }
@@ -123,16 +122,16 @@ public class HouseHelpView extends AppCompatActivity {
                     employerList.clear();
                     refereeList.clear();
                     chargeList.clear();
-                    mHouseHelpList.removeAllViews();
+                    mPlumberList.removeAllViews();
                 }
             }
         });
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<PlumberClass,Plumber_view.PlumberViewHolder> FBRA =new FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder>(
+        FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder> FBRA = new FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder>(
                 PlumberClass.class,
                 R.layout.plumber_row,
                 Plumber_view.PlumberViewHolder.class,
@@ -140,6 +139,7 @@ public class HouseHelpView extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(Plumber_view.PlumberViewHolder viewHolder, final PlumberClass model, int position) {
+                final String post_key=getRef(position).getKey().toString();
                 viewHolder.setFirstName(model.getFirstname());
                 viewHolder.setMiddleName(model.getMiddlename());
                 viewHolder.setSurName(model.getSurname());
@@ -153,6 +153,7 @@ public class HouseHelpView extends AppCompatActivity {
                 viewHolder.setEmployer(model.getPreviousemployer());
                 viewHolder.setReferee(model.getReferee());
                 viewHolder.setCharges(model.getCharge());
+
                 final String address = model.getWorkernumber();
                 viewHolder.clickSMS(new View.OnClickListener() {
                     @Override
@@ -180,50 +181,93 @@ public class HouseHelpView extends AppCompatActivity {
                             // for ActivityCompat#requestPermissions for more details.
                             return;
                         }else {
-                            ActivityCompat.requestPermissions(HouseHelpView.this,new String[]{android.Manifest.permission.CALL_PHONE},CALL_PERMISSION_CODE);
+                            ActivityCompat.requestPermissions(OthersView.this,new String[]{android.Manifest.permission.CALL_PHONE},CALL_PERMISSION_CODE);
                         }
                         startActivity(i);
                     }
                 });
+
+
             }
         };
 
-        mHouseHelpList.setAdapter(FBRA);
+        mPlumberList.setAdapter(FBRA);
     }
 
-//    public static class PlumberViewHolder extends RecyclerView.ViewHolder{
-//        public PlumberViewHolder(View itemView){
-//            super(itemView);
-//            View mView=itemView;
-//
-//        }
-//
-//        public void setFullName(String fullname){
-//            TextView post_name=(TextView)itemView.findViewById(R.id.textName);
-//            post_name.setText(fullname);
-//        }
-//        public void setNumber(String workernumber ){
-//            TextView post_number=(TextView)itemView.findViewById(R.id.textNumber);
-//            post_number.setText(workernumber);
-//        }
-//        public void setLocation(String location){
-//            TextView post_location=(TextView)itemView.findViewById(R.id.textLocation);
-//            post_location.setText(location);
-//        }
-//        public void setExperience(String experience){
-//            TextView post_experience=(TextView)itemView.findViewById(R.id.textExperience);
-//            post_experience.setText(experience);
-//        }
-//        public void setEmployer(String employer){
-//            TextView post_employer=(TextView)itemView.findViewById(R.id.textEmployer);
-//            post_employer.setText(employer);
-//        }
-//        public void setCharges(String charge){
-//            TextView post_charges=(TextView)itemView.findViewById(R.id.textCharges);
-//            post_charges.setText(charge);
-//        }
-//
-//    }
+    public static class PlumberViewHolder extends RecyclerView.ViewHolder {
+        public PlumberViewHolder(View itemView) {
+            super(itemView);
+            View mView = itemView;
+
+        }
+        public void clickSMS(View.OnClickListener listener) {
+            Button sms =(Button)itemView.findViewById(R.id.message);
+            sms.setOnClickListener(listener);
+        }
+        public void clickCall(View.OnClickListener listener) {
+            Button sms =(Button)itemView.findViewById(R.id.call);
+            sms.setOnClickListener(listener);
+        }
+
+        public void setFullName(String firstname) {
+            TextView post_name = (TextView) itemView.findViewById(R.id.textName);
+            post_name.setText(firstname);
+        }
+        public void setMiddleName(String middlename){
+            TextView post_name=(TextView)itemView.findViewById(R.id.textMiddleName);
+            post_name.setText(middlename);
+        }
+        public void setSurName(String surname){
+            TextView post_name=(TextView)itemView.findViewById(R.id.textSurName);
+            post_name.setText(surname);
+        }
+        public void setGender(String gender){
+            TextView post_name=(TextView)itemView.findViewById(R.id.textGender);
+            post_name.setText(gender);
+        }
+        public void setAge(String age){
+            TextView post_name=(TextView)itemView.findViewById(R.id.textAge);
+            post_name.setText(age);
+        }
+        public void setIdNumber(String idnumber){
+            TextView post_name=(TextView)itemView.findViewById(R.id.textId);
+            post_name.setText(idnumber);
+        }
+        public void setCitizenship(String citizenship){
+            TextView post_name=(TextView)itemView.findViewById(R.id.textCitizenship);
+            post_name.setText(citizenship);
+        }
+
+        public void setNumber(String workernumber) {
+            TextView post_number = (TextView) itemView.findViewById(R.id.textNumber);
+            post_number.setText(workernumber);
+        }
+
+        public void setLocation(String location) {
+            TextView post_location = (TextView) itemView.findViewById(R.id.textLocation);
+            post_location.setText(location);
+        }
+
+        public void setExperience(String experience) {
+            TextView post_experience = (TextView) itemView.findViewById(R.id.textExperience);
+            post_experience.setText(experience);
+        }
+
+        public void setEmployer(String employer) {
+            TextView post_employer = (TextView) itemView.findViewById(R.id.textEmployer);
+            post_employer.setText(employer);
+        }
+        public void setReferee(String referee){
+            TextView post_name=(TextView)itemView.findViewById(R.id.textReferee);
+            post_name.setText(referee);
+        }
+
+        public void setCharges(String charge) {
+            TextView post_charges = (TextView) itemView.findViewById(R.id.textCharges);
+            post_charges.setText(charge);
+        }
+
+    }
     //search
     private void setAdapter(final String searchedString){
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -242,7 +286,7 @@ public class HouseHelpView extends AppCompatActivity {
                 employerList.clear();
                 refereeList.clear();
                 chargeList.clear();
-                mHouseHelpList.removeAllViews();
+                mPlumberList.removeAllViews();
 
                 int counter=0;
 
@@ -281,8 +325,8 @@ public class HouseHelpView extends AppCompatActivity {
                         break;
 
                 }
-              //  searchAdapter=new SearchAdapter(HouseHelpView.this,fullNameList,phoneNumberList,locationList,experienceList,employerList,chargeList);
-               // mHouseHelpList.setAdapter(searchAdapter);
+                searchAdapter=new SearchAdapter(OthersView.this,fullNameList,middleNameList,surNameList,genderList,ageList,idNumberList,citizenshipList,phoneNumberList,locationList,experienceList,employerList,refereeList,chargeList);
+                mPlumberList.setAdapter(searchAdapter);
             }
 
             @Override

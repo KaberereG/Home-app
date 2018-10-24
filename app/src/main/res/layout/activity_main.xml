@@ -46,7 +46,7 @@
         android:layout_alignLeft="@+id/imageView5"
         android:layout_alignStart="@+id/imageView5"
         android:layout_below="@+id/imageView5"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/ic_action_user"
         android:drawableStart="@drawable/ic_action_user"
@@ -63,7 +63,7 @@
         android:layout_alignLeft="@+id/username"
         android:layout_alignStart="@+id/username"
         android:layout_below="@+id/username"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/ic_action_pass"
         android:drawableStart="@drawable/ic_action_pass"
@@ -84,44 +84,47 @@
         android:text="@string/login"
         android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/login"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="24dp"
-                android:text="@string/sign_text"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
 
 
         <TextView
             android:id="@+id/worker_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/register"
-            android:layout_marginLeft="52dp"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="26dp"
+           android:layout_centerHorizontal="true"
+            android:layout_below="@+id/login"
             android:text="@string/worker"
+            android:layout_marginTop="10dp"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
+            <TextView
+                android:id="@+id/or"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/worker_signup"
+               android:layout_centerHorizontal="true"
+                android:text="or"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
         <TextView
             android:id="@+id/employer_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/worker_signup"
-            android:layout_marginEnd="78dp"
-            android:layout_marginRight="78dp"
+            android:layout_below="@+id/or"
+            android:layout_centerHorizontal="true"
             android:text="@string/employer"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
+            <TextView
+                android:id="@+id/forgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:text="@string/forgot"
+              android:layout_alignParentBottom="true"
+                android:textSize="18sp"
+                />
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

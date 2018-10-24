@@ -24,12 +24,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
  private EditText userName;
  private EditText editTextPassword;
  private Button logiN;
  private TextView worker;
- private TextView employer;
+ private TextView employer,reset;
 
  private ProgressDialog progressDialog;
 
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        editTextPassword=(EditText)findViewById(R.id.password);
         worker=(TextView)findViewById(R.id.worker_signup);
 employer=(TextView)findViewById(R.id.employer_signup);
+reset=(TextView)findViewById(R.id.forgotPassword);
 
         progressDialog=new ProgressDialog(this);
 
@@ -78,6 +81,7 @@ employer=(TextView)findViewById(R.id.employer_signup);
         logiN.setOnClickListener(this);
         worker.setOnClickListener(this);
         employer.setOnClickListener(this);
+        reset.setOnClickListener(this);
 
 
     }
@@ -94,6 +98,10 @@ employer=(TextView)findViewById(R.id.employer_signup);
         }
         if(v==employer){
             Intent i=new Intent(this,Employer_signup.class);
+            startActivity(i);
+        }
+        if(v==reset){
+            Intent i=new Intent(this,ResetPassword.class);
             startActivity(i);
         }
     }
@@ -128,7 +136,8 @@ employer=(TextView)findViewById(R.id.employer_signup);
                              */
                         }
                         else{
-                            Toast.makeText(MainActivity.this,"Ensure correct email and password",Toast.LENGTH_SHORT).show();
+                            String message=task.getException().getMessage();
+                            Toast.makeText(MainActivity.this,"Error occured "+message,Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         }
                     }

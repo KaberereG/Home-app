@@ -1,7 +1,11 @@
 package com.example.waithera.homeapp;
 
+import android.*;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class NannyView extends AppCompatActivity {
+    private static final int CALL_PERMISSION_CODE = 23;
     private RecyclerView mNannyList;
     private DatabaseReference mDatabase;
 
@@ -32,12 +37,19 @@ public class NannyView extends AppCompatActivity {
     EditText search_edit_text;
     // RecyclerView recyclerView;
     DatabaseReference databaseReference;
-    FirebaseUser firebaseUser,userOne,userTwo;
+    FirebaseUser firebaseUser, userOne, userTwo;
     ArrayList<String> fullNameList;
+    ArrayList<String>middleNameList;
+    ArrayList<String>surNameList;
+    ArrayList<String>genderList;
+    ArrayList<String>ageList;
+    ArrayList<String>idNumberList;
+    ArrayList<String>citizenshipList;
     ArrayList<String> phoneNumberList;
     ArrayList<String> locationList;
     ArrayList<String> experienceList;
     ArrayList<String> employerList;
+    ArrayList<String> refereeList;
     ArrayList<String> chargeList;
     SearchAdapter searchAdapter;
 
@@ -52,35 +64,42 @@ public class NannyView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nanny_view);
 
-        mNannyList=(RecyclerView)findViewById(R.id.plumber_list);
+        mNannyList = (RecyclerView) findViewById(R.id.plumber_list);
         mNannyList.setHasFixedSize(true);
         mNannyList.setLayoutManager(new LinearLayoutManager(this));
-        mDatabase= FirebaseDatabase.getInstance().getReference().child("NannyDetails");
-        mAuth=FirebaseAuth.getInstance();
-        mAuthListener=new FirebaseAuth.AuthStateListener() {
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("NannyDetails");
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()==null){
-                    Intent registerIntent= new Intent(NannyView.this,Employer_signup.class);
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Intent registerIntent = new Intent(NannyView.this, Employer_signup.class);
                     registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(registerIntent);
                 }
             }
         };
         //implementing search
-        search_edit_text=(EditText) findViewById(R.id.searchPlumber);
+        search_edit_text = (EditText) findViewById(R.id.searchPlumber);
         //recyclerView=(RecyclerView)findViewById(R.id.nanny_list);
-        firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //recyclerView.setHasFixedSize(true);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        fullNameList=new ArrayList<>();
-        phoneNumberList=new ArrayList<>();
-        locationList=new ArrayList<>();
-        experienceList=new ArrayList<>();
-        employerList=new ArrayList<>();
-        chargeList=new ArrayList<>();
+        fullNameList = new ArrayList<>();
+        middleNameList=new ArrayList<>();
+        surNameList=new ArrayList<>();
+        genderList=new ArrayList<>();
+        ageList=new ArrayList<>();
+        idNumberList=new ArrayList<>();
+        citizenshipList=new ArrayList<>();
+        phoneNumberList = new ArrayList<>();
+        locationList = new ArrayList<>();
+        experienceList = new ArrayList<>();
+        employerList = new ArrayList<>();
+        refereeList=new ArrayList<>();
+        chargeList = new ArrayList<>();
         search_edit_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -94,51 +113,97 @@ public class NannyView extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().isEmpty()){
+                if (!s.toString().isEmpty()) {
                     setAdapter(s.toString());
-                }else {
+                } else {
                     fullNameList.clear();
+                    middleNameList.clear();
+                    surNameList.clear();
+                    genderList.clear();
+                    ageList.clear();
+                    idNumberList.clear();
+                    citizenshipList.clear();
                     phoneNumberList.clear();
                     locationList.clear();
                     experienceList.clear();
                     employerList.clear();
+                    refereeList.clear();
                     chargeList.clear();
                     mNannyList.removeAllViews();
                 }
             }
         });
-        message=(Button)findViewById(R.id.message);
+        message = (Button) findViewById(R.id.message);
 
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<PlumberClass,Plumber_view.PlumberViewHolder> FBRA =new FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder>(
+        FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder> FBRA = new FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder>(
                 PlumberClass.class,
                 R.layout.plumber_row,
                 Plumber_view.PlumberViewHolder.class,
                 mDatabase
         ) {
             @Override
-            protected void populateViewHolder(Plumber_view.PlumberViewHolder viewHolder, PlumberClass model, int position) {
-               final String post_key=getRef(position).getKey().toString();
+            protected void populateViewHolder(Plumber_view.PlumberViewHolder viewHolder, final PlumberClass model, int position) {
+                final String post_key = getRef(position).getKey().toString();
 
-                viewHolder.setFullName(model.getFullname());
+                viewHolder.setFirstName(model.getFirstname());
+                viewHolder.setMiddleName(model.getMiddlename());
+                viewHolder.setSurName(model.getSurname());
+                viewHolder.setGender(model.getGender());
+                viewHolder.setAge(model.getAge());
+                viewHolder.setIdNumber(model.getIdNumber());
+                viewHolder.setCitizenship(model.getCitizenship());
                 viewHolder.setNumber(model.getWorkernumber());
                 viewHolder.setLocation(model.getLocation());
                 viewHolder.setExperience(model.getExperience());
                 viewHolder.setEmployer(model.getPreviousemployer());
+                viewHolder.setReferee(model.getReferee());
                 viewHolder.setCharges(model.getCharge());
+                final String address = model.getWorkernumber();
+                viewHolder.clickSMS(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                        smsIntent.setType("vnd.android-dir/mms-sms");
+                        smsIntent.putExtra("address", address);
+                        startActivity(smsIntent);
+                    }
+                });
 
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                viewHolder.clickCall(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tel = "tel:" + model.getWorkernumber();
+                        Intent i = new Intent(Intent.ACTION_CALL);
+                        i.setData(Uri.parse(tel));
+                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }else {
+                            ActivityCompat.requestPermissions(NannyView.this,new String[]{android.Manifest.permission.CALL_PHONE},CALL_PERMISSION_CODE);
+                        }
+                        startActivity(i);
+                    }
+                });
+
+                /*viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent singleNannyActivity= new Intent(NannyView.this,Chat.class);
                         singleNannyActivity.putExtra("Postid",post_key);
                         startActivity(singleNannyActivity);
                     }
-                });
+                });*/
 
             }
         };
@@ -146,39 +211,39 @@ public class NannyView extends AppCompatActivity {
         mNannyList.setAdapter(FBRA);
     }
 
-    public static class PlumberViewHolder extends RecyclerView.ViewHolder{
-       View mView;
-        public PlumberViewHolder(View itemView){
-            super(itemView);
-            mView=itemView;
-
-        }
-
-        public void setFullName(String fullname){
-            TextView post_name=(TextView)mView.findViewById(R.id.textName);
-            post_name.setText(fullname);
-        }
-        public void setNumber(String workernumber ){
-            TextView post_number=(TextView)mView.findViewById(R.id.textNumber);
-            post_number.setText(workernumber);
-        }
-        public void setLocation(String location){
-            TextView post_location=(TextView)mView.findViewById(R.id.textLocation);
-            post_location.setText(location);
-        }
-        public void setExperience(String experience){
-            TextView post_experience=(TextView)mView.findViewById(R.id.textExperience);
-            post_experience.setText(experience);
-        }
-        public void setEmployer(String employer){
-            TextView post_employer=(TextView)mView.findViewById(R.id.textEmployer);
-            post_employer.setText(employer);
-        }
-        public void setCharges(String charge){
-            TextView post_charges=(TextView)mView.findViewById(R.id.textCharges);
-            post_charges.setText(charge);
-        }
-    }
+//    public static class PlumberViewHolder extends RecyclerView.ViewHolder{
+//       View mView;
+//        public PlumberViewHolder(View itemView){
+//            super(itemView);
+//            mView=itemView;
+//
+//        }
+//
+//        public void setFullName(String fullname){
+//            TextView post_name=(TextView)mView.findViewById(R.id.textName);
+//            post_name.setText(fullname);
+//        }
+//        public void setNumber(String workernumber ){
+//            TextView post_number=(TextView)mView.findViewById(R.id.textNumber);
+//            post_number.setText(workernumber);
+//        }
+//        public void setLocation(String location){
+//            TextView post_location=(TextView)mView.findViewById(R.id.textLocation);
+//            post_location.setText(location);
+//        }
+//        public void setExperience(String experience){
+//            TextView post_experience=(TextView)mView.findViewById(R.id.textExperience);
+//            post_experience.setText(experience);
+//        }
+//        public void setEmployer(String employer){
+//            TextView post_employer=(TextView)mView.findViewById(R.id.textEmployer);
+//            post_employer.setText(employer);
+//        }
+//        public void setCharges(String charge){
+//            TextView post_charges=(TextView)mView.findViewById(R.id.textCharges);
+//            post_charges.setText(charge);
+//        }
+//    }
     //search
     private void setAdapter(final String searchedString){
         userOne=FirebaseAuth.getInstance().getCurrentUser();
@@ -187,10 +252,17 @@ public class NannyView extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 fullNameList.clear();
+                middleNameList.clear();
+                surNameList.clear();
+                genderList.clear();
+                ageList.clear();
+                idNumberList.clear();
+                citizenshipList.clear();
                 phoneNumberList.clear();
                 locationList.clear();
                 experienceList.clear();
                 employerList.clear();
+                refereeList.clear();
                 chargeList.clear();
                 mNannyList.removeAllViews();
 
@@ -198,21 +270,35 @@ public class NannyView extends AppCompatActivity {
 
                 for(DataSnapshot snapshot:dataSnapshot.getChildren()){
 
-                    String full_name=snapshot.child("username").getValue(String.class);
+                    String full_name=snapshot.child("firstname").getValue(String.class);
+                    String middle_name=snapshot.child("middlename").getValue(String.class);
+                    String sur_name=snapshot.child("surname").getValue(String.class);
+                    String gen_der=snapshot.child("gender").getValue(String.class);
+                    String age=snapshot.child("age").getValue(String.class);
+                    String id_number=snapshot.child("idnumber").getValue(String.class);
+                    String citizenship=snapshot.child("citizenship").getValue(String.class);
                     String phone_number=snapshot.child("workernumber").getValue(String.class);
                     String location=snapshot.child("location").getValue(String.class);
                     String experience=snapshot.child("experience").getValue(String.class);
                     String employer=snapshot.child("previousemployer").getValue(String.class);
+                    String referee=snapshot.child("referee").getValue(String.class);
                     String charge=snapshot.child("charge").getValue(String.class);
 
 
 
                     if(location.contains(searchedString)){
                         fullNameList.add(full_name);
+                        middleNameList.add(middle_name);
+                        surNameList.add(sur_name);
+                        genderList.add(gen_der);
+                        ageList.add(age);
+                        idNumberList.add(id_number);
+                        citizenshipList.add(citizenship);
                         phoneNumberList.add(phone_number);
                         locationList.add(location);
                         experienceList.add(experience);
                         employerList.add(employer);
+                        refereeList.add(referee);
                         chargeList.add(charge);
                         counter++;
                     }
@@ -220,7 +306,7 @@ public class NannyView extends AppCompatActivity {
                         break;
 
                 }
-                searchAdapter=new SearchAdapter(NannyView.this,fullNameList,phoneNumberList,locationList,experienceList,employerList,chargeList);
+                searchAdapter=new SearchAdapter(NannyView.this,fullNameList,middleNameList,surNameList,genderList,ageList,idNumberList,citizenshipList,phoneNumberList,locationList,experienceList,employerList,refereeList,chargeList);
                 mNannyList.setAdapter(searchAdapter);
             }
 

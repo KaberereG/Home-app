@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/grad_bg"
     tools:context="com.example.waithera.homeapp.Login">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -17,16 +20,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:layout_marginLeft="10dp"
-        android:text="Occupation"
-        android:textSize="24sp" />
-    <TextView
-        android:id="@+id/workavailable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hiring"
-        android:layout_marginLeft="50dp"
-        android:textSize="24sp"
-        />
+        android:text="Select the occupation"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp" />
+
 </LinearLayout>
     <Button
         android:id="@+id/nannys"
@@ -85,14 +82,27 @@
         android:layout_marginTop="36dp"
         android:text="@string/cleaner" />
 
+        <Button
+            android:id="@+id/otherWorkers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/cleaner"
+            android:layout_alignStart="@+id/cleaner"
+            android:layout_below="@+id/cleaner"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/background_login"
+            android:layout_marginTop="36dp"
+            android:text="@string/others" />
+
+
     <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/otherWorkers"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:text="Logout"
         android:background="@drawable/background_signup"/>
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

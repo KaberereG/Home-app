@@ -2,6 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-<item android:title="Sign out" app:showAsAction="never"
-    android:id="@+id/menu_sign_out"/>
+<item android:id="@+id/home"
+    android:title="home">
+</item>
+    <item android:id="@+id/setting"
+        android:title="Setting">
+    </item>
+    <item android:id="@+id/log"
+        android:title="Log">
+    </item>
+    <item android:id="@+id/help"
+        android:title="Help">
+
+    </item>
+
 </menu>

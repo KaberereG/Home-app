@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
-private Button logout,nanny,plumber,carpenter,houseHelp,cleaner;
+private Button logout,nanny,plumber,carpenter,houseHelp,cleaner,others;
 private FirebaseAuth firebaseAuth;
 
     @Override
@@ -34,6 +34,7 @@ private FirebaseAuth firebaseAuth;
         carpenter=(Button)findViewById(R.id.carpenter);
         houseHelp=(Button)findViewById(R.id.househelp);
         cleaner=(Button)findViewById(R.id.cleaner);
+        others=(Button)findViewById(R.id.otherWorkers);
 
         logout.setOnClickListener(this);
         nanny.setOnClickListener(this);
@@ -41,6 +42,7 @@ private FirebaseAuth firebaseAuth;
         carpenter.setOnClickListener(this);
         houseHelp.setOnClickListener(this);
 cleaner.setOnClickListener(this);
+others.setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +73,10 @@ cleaner.setOnClickListener(this);
         if(view==cleaner){
             Intent c=new Intent(this,Cleaner.class);
             startActivity(c);
+        }
+        if(view==others){
+            Intent o=new Intent(this,Other.class);
+            startActivity(o);
         }
 
     }
