@@ -29,15 +29,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class NannyView extends AppCompatActivity {
-    private static final int CALL_PERMISSION_CODE = 23;
-    private RecyclerView mNannyList;
-    private DatabaseReference mDatabase;
-
-    //implementing search
     EditText search_edit_text;
     // RecyclerView recyclerView;
     DatabaseReference databaseReference;
-    FirebaseUser firebaseUser, userOne, userTwo;
+    FirebaseUser firebaseUser;
     ArrayList<String> fullNameList;
     ArrayList<String>middleNameList;
     ArrayList<String>surNameList;
@@ -50,56 +45,58 @@ public class NannyView extends AppCompatActivity {
     ArrayList<String> experienceList;
     ArrayList<String> employerList;
     ArrayList<String> refereeList;
+    ArrayList<String>durationList;
     ArrayList<String> chargeList;
+
     SearchAdapter searchAdapter;
-
-    //Button
-    Button message;
-
+    private RecyclerView mPlumberList;
+    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private static final int CALL_PERMISSION_CODE = 23;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nanny_view);
+        setContentView(R.layout.activity_plumber_view);
 
-        mNannyList = (RecyclerView) findViewById(R.id.plumber_list);
-        mNannyList.setHasFixedSize(true);
-        mNannyList.setLayoutManager(new LinearLayoutManager(this));
+        mPlumberList = (RecyclerView) findViewById(R.id.plumber_list);
+        mPlumberList.setHasFixedSize(true);
+        mPlumberList.setLayoutManager(new LinearLayoutManager(this));
         mDatabase = FirebaseDatabase.getInstance().getReference().child("NannyDetails");
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuth=FirebaseAuth.getInstance();
+        mAuthListener=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    Intent registerIntent = new Intent(NannyView.this, Employer_signup.class);
+                if(firebaseAuth.getCurrentUser()==null){
+                    Intent registerIntent= new Intent(NannyView.this,Employer_signup.class);
                     registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(registerIntent);
                 }
             }
         };
         //implementing search
-        search_edit_text = (EditText) findViewById(R.id.searchPlumber);
+        search_edit_text=(EditText) findViewById(R.id.searchPlumber);
         //recyclerView=(RecyclerView)findViewById(R.id.nanny_list);
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
         //recyclerView.setHasFixedSize(true);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        fullNameList = new ArrayList<>();
+        fullNameList=new ArrayList<>();
         middleNameList=new ArrayList<>();
         surNameList=new ArrayList<>();
         genderList=new ArrayList<>();
         ageList=new ArrayList<>();
         idNumberList=new ArrayList<>();
         citizenshipList=new ArrayList<>();
-        phoneNumberList = new ArrayList<>();
-        locationList = new ArrayList<>();
-        experienceList = new ArrayList<>();
-        employerList = new ArrayList<>();
+        phoneNumberList=new ArrayList<>();
+        locationList=new ArrayList<>();
+        experienceList=new ArrayList<>();
+        employerList=new ArrayList<>();
         refereeList=new ArrayList<>();
-        chargeList = new ArrayList<>();
+        durationList=new ArrayList<>();
+        chargeList=new ArrayList<>();
         search_edit_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -113,9 +110,9 @@ public class NannyView extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
+                if(!s.toString().isEmpty()){
                     setAdapter(s.toString());
-                } else {
+                }else {
                     fullNameList.clear();
                     middleNameList.clear();
                     surNameList.clear();
@@ -128,13 +125,12 @@ public class NannyView extends AppCompatActivity {
                     experienceList.clear();
                     employerList.clear();
                     refereeList.clear();
+                    durationList.clear();
                     chargeList.clear();
-                    mNannyList.removeAllViews();
+                    mPlumberList.removeAllViews();
                 }
             }
         });
-        message = (Button) findViewById(R.id.message);
-
     }
 
     @Override
@@ -148,8 +144,7 @@ public class NannyView extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(Plumber_view.PlumberViewHolder viewHolder, final PlumberClass model, int position) {
-                final String post_key = getRef(position).getKey().toString();
-
+                final String post_key=getRef(position).getKey().toString();
                 viewHolder.setFirstName(model.getFirstname());
                 viewHolder.setMiddleName(model.getMiddlename());
                 viewHolder.setSurName(model.getSurname());
@@ -162,7 +157,9 @@ public class NannyView extends AppCompatActivity {
                 viewHolder.setExperience(model.getExperience());
                 viewHolder.setEmployer(model.getPreviousemployer());
                 viewHolder.setReferee(model.getReferee());
+                viewHolder.setDuration(model.getDuration());
                 viewHolder.setCharges(model.getCharge());
+
                 final String address = model.getWorkernumber();
                 viewHolder.clickSMS(new View.OnClickListener() {
                     @Override
@@ -196,58 +193,92 @@ public class NannyView extends AppCompatActivity {
                     }
                 });
 
-                /*viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleNannyActivity= new Intent(NannyView.this,Chat.class);
-                        singleNannyActivity.putExtra("Postid",post_key);
-                        startActivity(singleNannyActivity);
-                    }
-                });*/
 
             }
         };
 
-        mNannyList.setAdapter(FBRA);
+        mPlumberList.setAdapter(FBRA);
     }
 
-//    public static class PlumberViewHolder extends RecyclerView.ViewHolder{
-//       View mView;
-//        public PlumberViewHolder(View itemView){
+    //    public static class PlumberViewHolder extends RecyclerView.ViewHolder {
+//        public PlumberViewHolder(View itemView) {
 //            super(itemView);
-//            mView=itemView;
+//            View mView = itemView;
 //
 //        }
-//
-//        public void setFullName(String fullname){
-//            TextView post_name=(TextView)mView.findViewById(R.id.textName);
-//            post_name.setText(fullname);
+//        public void clickSMS(View.OnClickListener listener) {
+//            Button sms =(Button)itemView.findViewById(R.id.message);
+//            sms.setOnClickListener(listener);
 //        }
-//        public void setNumber(String workernumber ){
-//            TextView post_number=(TextView)mView.findViewById(R.id.textNumber);
+//        public void clickCall(View.OnClickListener listener) {
+//            Button sms =(Button)itemView.findViewById(R.id.call);
+//            sms.setOnClickListener(listener);
+//        }
+//
+//        public void setFirstName(String firstname) {
+//            TextView post_name = (TextView) itemView.findViewById(R.id.textName);
+//            post_name.setText(firstname);
+//        }
+//        public void setMiddleName(String middlename){
+//            TextView post_name=(TextView)itemView.findViewById(R.id.textMiddleName);
+//            post_name.setText(middlename);
+//        }
+//        public void setSurName(String surname){
+//            TextView post_name=(TextView)itemView.findViewById(R.id.textSurName);
+//            post_name.setText(surname);
+//        }
+//        public void setGender(String gender){
+//            TextView post_name=(TextView)itemView.findViewById(R.id.textGender);
+//            post_name.setText(gender);
+//        }
+//        public void setAge(String age){
+//            TextView post_name=(TextView)itemView.findViewById(R.id.textAge);
+//            post_name.setText(age);
+//        }
+//        public void setIdNumber(String idNumber){
+//            TextView post_name=(TextView)itemView.findViewById(R.id.textId);
+//            post_name.setText(idNumber);
+//        }
+//        public void setCitizenship(String citizenship){
+//            TextView post_name=(TextView)itemView.findViewById(R.id.textCitizenship);
+//            post_name.setText(citizenship);
+//        }
+//
+//        public void setNumber(String workernumber) {
+//            TextView post_number = (TextView) itemView.findViewById(R.id.textNumber);
 //            post_number.setText(workernumber);
 //        }
-//        public void setLocation(String location){
-//            TextView post_location=(TextView)mView.findViewById(R.id.textLocation);
+//
+//        public void setLocation(String location) {
+//            TextView post_location = (TextView) itemView.findViewById(R.id.textLocation);
 //            post_location.setText(location);
 //        }
-//        public void setExperience(String experience){
-//            TextView post_experience=(TextView)mView.findViewById(R.id.textExperience);
+//
+//        public void setExperience(String experience) {
+//            TextView post_experience = (TextView) itemView.findViewById(R.id.textExperience);
 //            post_experience.setText(experience);
 //        }
-//        public void setEmployer(String employer){
-//            TextView post_employer=(TextView)mView.findViewById(R.id.textEmployer);
+//
+//        public void setEmployer(String employer) {
+//            TextView post_employer = (TextView) itemView.findViewById(R.id.textEmployer);
 //            post_employer.setText(employer);
 //        }
-//        public void setCharges(String charge){
-//            TextView post_charges=(TextView)mView.findViewById(R.id.textCharges);
+//        public void setReferee(String referee){
+//            TextView post_name=(TextView)itemView.findViewById(R.id.textReferee);
+//            post_name.setText(referee);
+//        }
+//        public void setDuration(String duration) {
+//            TextView post_charges = (TextView) itemView.findViewById(R.id.textDuration);
+//            post_charges.setText(duration);
+//        }
+//        public void setCharges(String charge) {
+//            TextView post_charges = (TextView) itemView.findViewById(R.id.textCharges);
 //            post_charges.setText(charge);
 //        }
+//
 //    }
     //search
     private void setAdapter(final String searchedString){
-        userOne=FirebaseAuth.getInstance().getCurrentUser();
-
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -263,13 +294,13 @@ public class NannyView extends AppCompatActivity {
                 experienceList.clear();
                 employerList.clear();
                 refereeList.clear();
+                durationList.clear();
                 chargeList.clear();
-                mNannyList.removeAllViews();
+                mPlumberList.removeAllViews();
 
                 int counter=0;
 
                 for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-
                     String full_name=snapshot.child("firstname").getValue(String.class);
                     String middle_name=snapshot.child("middlename").getValue(String.class);
                     String sur_name=snapshot.child("surname").getValue(String.class);
@@ -282,9 +313,8 @@ public class NannyView extends AppCompatActivity {
                     String experience=snapshot.child("experience").getValue(String.class);
                     String employer=snapshot.child("previousemployer").getValue(String.class);
                     String referee=snapshot.child("referee").getValue(String.class);
+                    String duration=snapshot.child("duration").getValue(String.class);
                     String charge=snapshot.child("charge").getValue(String.class);
-
-
 
                     if(location.contains(searchedString)){
                         fullNameList.add(full_name);
@@ -299,6 +329,7 @@ public class NannyView extends AppCompatActivity {
                         experienceList.add(experience);
                         employerList.add(employer);
                         refereeList.add(referee);
+                        durationList.add(duration);
                         chargeList.add(charge);
                         counter++;
                     }
@@ -306,8 +337,8 @@ public class NannyView extends AppCompatActivity {
                         break;
 
                 }
-                searchAdapter=new SearchAdapter(NannyView.this,fullNameList,middleNameList,surNameList,genderList,ageList,idNumberList,citizenshipList,phoneNumberList,locationList,experienceList,employerList,refereeList,chargeList);
-                mNannyList.setAdapter(searchAdapter);
+                searchAdapter=new SearchAdapter(NannyView.this,fullNameList,middleNameList,surNameList,genderList,ageList,idNumberList,citizenshipList,phoneNumberList,locationList,experienceList,employerList,refereeList,durationList,chargeList);
+                mPlumberList.setAdapter(searchAdapter);
             }
 
             @Override

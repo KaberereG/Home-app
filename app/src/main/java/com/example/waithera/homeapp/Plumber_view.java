@@ -45,6 +45,7 @@ public class Plumber_view extends AppCompatActivity {
     ArrayList<String> experienceList;
     ArrayList<String> employerList;
     ArrayList<String> refereeList;
+    ArrayList<String>durationList;
     ArrayList<String> chargeList;
 
     SearchAdapter searchAdapter;
@@ -94,6 +95,7 @@ public class Plumber_view extends AppCompatActivity {
         experienceList=new ArrayList<>();
         employerList=new ArrayList<>();
         refereeList=new ArrayList<>();
+        durationList=new ArrayList<>();
         chargeList=new ArrayList<>();
 search_edit_text.addTextChangedListener(new TextWatcher() {
     @Override
@@ -123,6 +125,7 @@ if(!s.toString().isEmpty()){
     experienceList.clear();
     employerList.clear();
     refereeList.clear();
+    durationList.clear();
     chargeList.clear();
     mPlumberList.removeAllViews();
 }
@@ -154,6 +157,7 @@ if(!s.toString().isEmpty()){
                 viewHolder.setExperience(model.getExperience());
                 viewHolder.setEmployer(model.getPreviousemployer());
                 viewHolder.setReferee(model.getReferee());
+                viewHolder.setDuration(model.getDuration());
                 viewHolder.setCharges(model.getCharge());
 
                 final String address = model.getWorkernumber();
@@ -212,7 +216,7 @@ if(!s.toString().isEmpty()){
         }
 
         public void setFirstName(String firstname) {
-            TextView post_name = (TextView) itemView.findViewById(R.id.textName);
+            TextView post_name = (TextView) itemView.findViewById(R.id.textFirstName);
             post_name.setText(firstname);
         }
         public void setMiddleName(String middlename){
@@ -232,7 +236,7 @@ if(!s.toString().isEmpty()){
             post_name.setText(age);
         }
         public void setIdNumber(String idNumber){
-            TextView post_name=(TextView)itemView.findViewById(R.id.textId);
+            TextView post_name=(TextView)itemView.findViewById(R.id.textIdNumber);
             post_name.setText(idNumber);
         }
         public void setCitizenship(String citizenship){
@@ -263,7 +267,10 @@ if(!s.toString().isEmpty()){
             TextView post_name=(TextView)itemView.findViewById(R.id.textReferee);
             post_name.setText(referee);
         }
-
+        public void setDuration(String duration) {
+            TextView post_charges = (TextView) itemView.findViewById(R.id.textDuration);
+            post_charges.setText(duration);
+        }
         public void setCharges(String charge) {
             TextView post_charges = (TextView) itemView.findViewById(R.id.textCharges);
             post_charges.setText(charge);
@@ -287,6 +294,7 @@ if(!s.toString().isEmpty()){
                 experienceList.clear();
                 employerList.clear();
                 refereeList.clear();
+                durationList.clear();
                 chargeList.clear();
                 mPlumberList.removeAllViews();
 
@@ -305,6 +313,7 @@ if(!s.toString().isEmpty()){
                 String experience=snapshot.child("experience").getValue(String.class);
                 String employer=snapshot.child("previousemployer").getValue(String.class);
                 String referee=snapshot.child("referee").getValue(String.class);
+                String duration=snapshot.child("duration").getValue(String.class);
                 String charge=snapshot.child("charge").getValue(String.class);
 
                 if(location.contains(searchedString)){
@@ -320,6 +329,7 @@ if(!s.toString().isEmpty()){
                     experienceList.add(experience);
                     employerList.add(employer);
                     refereeList.add(referee);
+                    durationList.add(duration);
                     chargeList.add(charge);
                     counter++;
                 }
@@ -327,7 +337,7 @@ if(!s.toString().isEmpty()){
                     break;
 
                 }
-                searchAdapter=new SearchAdapter(Plumber_view.this,fullNameList,middleNameList,surNameList,genderList,ageList,idNumberList,citizenshipList,phoneNumberList,locationList,experienceList,employerList,refereeList,chargeList);
+                searchAdapter=new SearchAdapter(Plumber_view.this,fullNameList,middleNameList,surNameList,genderList,ageList,idNumberList,citizenshipList,phoneNumberList,locationList,experienceList,employerList,refereeList,durationList,chargeList);
            mPlumberList.setAdapter(searchAdapter);
             }
 

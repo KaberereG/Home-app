@@ -1,16 +1,12 @@
 package com.example.waithera.homeapp;
 
-/**
- * Created by Waithera on 06/06/2018.
- */
-
 public class PlumberClass {
-    private String firstname,middlename,surname,gender,age,idNumber,citizenship,workernumber,location,experience,previousemployer,referee,charge,username;
+    private String firstname,middlename,surname,gender,age,idNumber,citizenship,workernumber,location,experience,previousemployer,referee,duration,charge,username;
     public PlumberClass(){
 
     }
 
-    public PlumberClass(String name,String middlename,String surname,String gender,String age,String idNumber,String citizenship, String number, String location, String experience, String employer, String referee,String charge,String username) {
+    public PlumberClass(String name,String middlename,String surname,String gender,String age,String idNumber,String citizenship, String number, String location, String experience, String employer, String referee,String duration,String charge,String username) {
         this.firstname = name;
         this.middlename=middlename;
         this.surname=surname;
@@ -23,6 +19,7 @@ public class PlumberClass {
         this.experience = experience;
         this.previousemployer = employer;
         this.referee=referee;
+        this.duration=duration;
         this.charge = charge;
         this.username=username;
     }
@@ -32,7 +29,7 @@ public class PlumberClass {
     }
 
     public void setFirstname(String fullname) {
-        this.firstname = firstname;
+        this.firstname = fullname;
     }
 
     public String getMiddlename() {
@@ -137,6 +134,14 @@ public class PlumberClass {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }
 

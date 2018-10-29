@@ -1,5 +1,6 @@
 package com.example.waithera.homeapp;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,19 +27,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Carpenter extends AppCompatActivity {
-    private EditText firstName,middleName,surName,workerNumber, workerLocation,ageN, citizenship,idNumber,workExperience,referee, prevEmployerContact, charges;
+    private EditText firstName,middleName,surName,workerNumber, workerLocation,ageCurrent, citizenship,idNumber,workExperience,referee, prevEmployerContact, charges;
     private Button submit;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference, mDatabaseUsers;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
+    private String date;
 
+   private MyDobTextDatePicker ageN;
     //Spinner
-    private Spinner spinner;
+    private Spinner spinner,spinner_two;
+    //radio
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +62,19 @@ public class Carpenter extends AppCompatActivity {
         workExperience = (EditText) findViewById(R.id.workExperience);
         prevEmployerContact = (EditText) findViewById(R.id.workerPrevEmployer);
         charges = (EditText) findViewById(R.id.charges);
-        ageN=(EditText)findViewById(R.id.age);
+     //  ageN=(EditText)findViewById(R.id.age);
         citizenship=(EditText)findViewById(R.id.citizenship);
         idNumber=(EditText)findViewById(R.id.idNumber);
         referee=(EditText)findViewById(R.id.referee);
 
+
+ageN=new MyDobTextDatePicker(Carpenter.this,R.id.age);
+radioGroup=(RadioGroup)findViewById(R.id.radio);
+
+
+
 //       //spinner
+        spinner_two=(Spinner)findViewById(R.id.spinner_two);
         spinner=(Spinner)findViewById(R.id.spinner);
         ArrayAdapter<String> myAdaper=new ArrayAdapter<String>(Carpenter.this,
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.names));
@@ -85,10 +105,15 @@ public class Carpenter extends AppCompatActivity {
             }
         });
 
+        ArrayAdapter<String> myAdaperTwo=new ArrayAdapter<String>(Carpenter.this,
+                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.citizenship));
+        myAdaperTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_two.setAdapter(myAdaperTwo);
 
 
 //instantiating database reference and firebase auth
         databaseReference = database.getInstance().getReference().child("CarpenterDetails");
+      // String postKey=databaseReference.getKey();
         mAuth=FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
 
@@ -96,30 +121,42 @@ public class Carpenter extends AppCompatActivity {
 
 
         submit = (Button) findViewById(R.id.submit);
+
     }
+    public void onRadioButtonClicked(View view) {
+
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        radioButton=(RadioButton)findViewById(selectedId);
+    }
+
     public void submitButtonClicked(View view) {
+        final String postKey=databaseReference.getKey();
        // final String workerN = workerName.getText().toString().trim();
         final String firstN=firstName.getText().toString().trim();
         final String middleN=middleName.getText().toString().trim();
         final String surN=surName.getText().toString().trim();
         final String gender=spinner.getSelectedItem().toString().trim();
-        final String age=ageN.getText().toString().trim();
+      final String age=ageN.age().trim();
         final String idN=idNumber.getText().toString().trim();
-        final String citizenS=citizenship.getText().toString().trim();
+        final String citizenShip=spinner_two.getSelectedItem().toString().trim();
         final String workerNo = workerNumber.getText().toString().trim();
         final String workerL = workerLocation.getText().toString().trim();
         final String workerE = workExperience.getText().toString().trim();
         final String prevEmp = prevEmployerContact.getText().toString().trim();
         final String ref=referee.getText().toString().trim();
+        final String radio=radioButton.getText().toString().trim();
         final String charge = charges.getText().toString().trim();
-
-
+        //validation
+//        Pattern ps = Pattern.compile("^[a-zA-Z ]+$");
+//        Matcher ms = ps.matcher(firstN);
+//        boolean bs = ms.matches();
         if (TextUtils.isEmpty(firstN)) {
-            Toast.makeText(this, "Please enter your first name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(middleN)) {
             Toast.makeText(this, "Please enter your middle name", Toast.LENGTH_SHORT).show();
+
             return;
         }
         if (TextUtils.isEmpty(surN)) {
@@ -127,7 +164,7 @@ public class Carpenter extends AppCompatActivity {
             return;
         }
         if (TextUtils.isEmpty(gender)) {
-            Toast.makeText(this, "Please enter your gender", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select your gender", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(age)) {
@@ -138,8 +175,8 @@ public class Carpenter extends AppCompatActivity {
             Toast.makeText(this, "Please enter your Id Number or Passport Number", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (TextUtils.isEmpty(citizenS)){
-            Toast.makeText(this, "Please enter your citizenship", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(citizenShip)){
+            Toast.makeText(this, "Please select your citizenship", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -173,7 +210,7 @@ public class Carpenter extends AppCompatActivity {
 
 
         //when all fields are filled action to take is submit
-        if(!TextUtils.isEmpty(firstN)&&!TextUtils.isEmpty(middleN)&&!TextUtils.isEmpty(surN)&&!TextUtils.isEmpty(gender)&&!TextUtils.isEmpty(workerNo)&&!TextUtils.isEmpty(workerL)&&!TextUtils.isEmpty(workerE)&&!TextUtils.isEmpty(prevEmp)&&!TextUtils.isEmpty(charge)&&!TextUtils.isEmpty(age)&&!TextUtils.isEmpty(citizenS)&&!TextUtils.isEmpty(idN)&&!TextUtils.isEmpty(ref)){
+        if(!TextUtils.isEmpty(firstN)&&!TextUtils.isEmpty(middleN)&&!TextUtils.isEmpty(surN)&&!TextUtils.isEmpty(gender)&&!TextUtils.isEmpty(workerNo)&&!TextUtils.isEmpty(workerL)&&!TextUtils.isEmpty(workerE)&&!TextUtils.isEmpty(prevEmp)&&!TextUtils.isEmpty(charge)&&!TextUtils.isEmpty(age)&&! TextUtils.isEmpty(citizenShip)&&!TextUtils.isEmpty(idN)&&!TextUtils.isEmpty(ref)){
             Toast.makeText(this,"Submitting...",Toast.LENGTH_LONG).show();
 
             final DatabaseReference newPost=databaseReference.push();
@@ -187,12 +224,13 @@ public class Carpenter extends AppCompatActivity {
                     newPost.child("gender").setValue(gender);
                     newPost.child("age").setValue(age);
                     newPost.child("idnumber").setValue(idN);
-                    newPost.child("citizenship").setValue(citizenS);
+                    newPost.child("citizenship").setValue(citizenShip);
                     newPost.child("workernumber").setValue(workerNo);
                     newPost.child("location").setValue(workerL);
                     newPost.child("experience").setValue(workerE);
                     newPost.child("previousemployer").setValue(prevEmp);
                     newPost.child("referee").setValue(ref);
+                    newPost.child("duration").setValue(radio);
                     newPost.child("charge").setValue(charge);
                     newPost.child("uid").setValue(mCurrentUser.getUid()); //to get current user uid
                     //aim to get the current user name of the user who has posted the above information
@@ -202,6 +240,7 @@ public class Carpenter extends AppCompatActivity {
 
                             if(task.isSuccessful()){
                                 Intent login=new Intent(Carpenter.this,Login.class);
+                               login.putExtra("Postid",postKey);
                                 startActivity(login);
                             }
                             else{

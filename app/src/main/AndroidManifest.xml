@@ -36,7 +36,8 @@
         <activity android:name=".Chat" />
         <activity android:name=".ResetPassword" />
         <activity android:name=".Other" />
-        <activity android:name=".OthersView"></activity>
+        <activity android:name=".OthersView" />
+        <activity android:name=".DeletePost"></activity>
     </application>
 
 </manifest>

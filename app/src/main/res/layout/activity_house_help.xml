@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         >
         <TextView
@@ -18,6 +18,23 @@
             android:text="Fill in form with your details:"
             android:textSize="20sp"
             />
+        <!--<TextView-->
+        <!--android:id="@+id/fullname"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="25dp"-->
+        <!--android:text="First Name:"-->
+        <!--android:textSize="18sp" />-->
+        <!--<EditText-->
+        <!--android:id="@+id/workerName"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/editshape"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:inputType="textPersonName"-->
+        <!--android:padding="5dp" />-->
         <TextView
             android:id="@+id/firstname"
             android:layout_width="wrap_content"
@@ -30,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:background="@drawable/editshape"
             android:padding="5dp"/>
         <TextView
@@ -44,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:background="@drawable/editshape"
             android:padding="5dp"/>
         <TextView
@@ -59,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:background="@drawable/editshape"
             android:padding="5dp"/>
         <TextView
@@ -106,6 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/editshape"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/citizen"
@@ -115,6 +136,13 @@
             android:text="Citizenship:"
             android:textSize="18sp"
             />
+        <!-- Spinner Element -->
+        <Spinner
+            android:id="@+id/spinner_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            />
         <EditText
             android:id="@+id/citizenship"
             android:layout_width="match_parent"
@@ -122,7 +150,6 @@
             android:layout_margin="10dp"
             android:background="@drawable/editshape"
             android:padding="5dp"/>
-
 
         <TextView
             android:id="@+id/worker_number"
@@ -139,6 +166,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:digits="0123456789+"
             android:padding="5dp" />
 
 
@@ -147,7 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Location:"
+            android:text="Current Location:"
             android:textSize="18sp" />
         <EditText
             android:id="@+id/workerLocation"
@@ -157,7 +185,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:inputType="textPersonName"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
 
         <TextView
@@ -175,7 +203,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:inputType="textPersonName"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+            android:inputType="textCapSentences|textMultiLine"
             android:padding="10dp" />
 
         <TextView
@@ -183,7 +212,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Referee:"
+            android:text="Referee 1:"
             android:textSize="18sp" />
         <EditText
             android:id="@+id/workerPrevEmployer"
@@ -194,7 +223,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/editshape"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
         <TextView
             android:id="@+id/textView11"
@@ -212,8 +241,9 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/editshape"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
+
 
         <TextView
             android:id="@+id/textView8"
@@ -233,6 +263,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
 
         <Button
@@ -244,8 +275,13 @@
             android:text="Submit"
             android:onClick="submitButtonClicked"
             android:textSize="30sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:padding="5dp"/>
+
+
     </LinearLayout>
+
 
 
 

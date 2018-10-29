@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,11 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class CarpenterView extends AppCompatActivity {
-    private static final int CALL_PERMISSION_CODE = 23;
-    private RecyclerView mCarpenterList;
-    private DatabaseReference mDatabase;
-
-    //implementing search
+  //  private static final int CALL_PERMISSION_CODE = 23;
     EditText search_edit_text;
     // RecyclerView recyclerView;
     DatabaseReference databaseReference;
@@ -48,20 +45,25 @@ public class CarpenterView extends AppCompatActivity {
     ArrayList<String> experienceList;
     ArrayList<String> employerList;
     ArrayList<String> refereeList;
+    ArrayList<String>durationList;
     ArrayList<String> chargeList;
-    SearchAdapter searchAdapter;
 
+    SearchAdapter searchAdapter;
+    private RecyclerView mPlumberList;
+    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private static final int CALL_PERMISSION_CODE = 23;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_carpenter_view);
+        setContentView(R.layout.activity_plumber_view);
 
-        mCarpenterList=(RecyclerView)findViewById(R.id.plumber_list);
-        mCarpenterList.setHasFixedSize(true);
-        mCarpenterList.setLayoutManager(new LinearLayoutManager(this));
-        mDatabase= FirebaseDatabase.getInstance().getReference().child("CarpenterDetails");
+        mPlumberList = (RecyclerView) findViewById(R.id.plumber_list);
+        mPlumberList.setHasFixedSize(true);
+        mPlumberList.setLayoutManager(new LinearLayoutManager(this));
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("CarpenterDetails");
         mAuth=FirebaseAuth.getInstance();
         mAuthListener=new FirebaseAuth.AuthStateListener() {
             @Override
@@ -93,6 +95,7 @@ public class CarpenterView extends AppCompatActivity {
         experienceList=new ArrayList<>();
         employerList=new ArrayList<>();
         refereeList=new ArrayList<>();
+        durationList=new ArrayList<>();
         chargeList=new ArrayList<>();
         search_edit_text.addTextChangedListener(new TextWatcher() {
             @Override
@@ -122,17 +125,18 @@ public class CarpenterView extends AppCompatActivity {
                     experienceList.clear();
                     employerList.clear();
                     refereeList.clear();
+                    durationList.clear();
                     chargeList.clear();
-                    mCarpenterList.removeAllViews();
+                    mPlumberList.removeAllViews();
                 }
             }
         });
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<PlumberClass,Plumber_view.PlumberViewHolder> FBRA =new FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder>(
+        FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder> FBRA = new FirebaseRecyclerAdapter<PlumberClass, Plumber_view.PlumberViewHolder>(
                 PlumberClass.class,
                 R.layout.plumber_row,
                 Plumber_view.PlumberViewHolder.class,
@@ -140,19 +144,22 @@ public class CarpenterView extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(Plumber_view.PlumberViewHolder viewHolder, final PlumberClass model, int position) {
+                final String post_key=getRef(position).getKey().toString();
                 viewHolder.setFirstName(model.getFirstname());
                 viewHolder.setMiddleName(model.getMiddlename());
-              viewHolder.setSurName(model.getSurname());
-              viewHolder.setGender(model.getGender());
-              viewHolder.setAge(model.getAge());
-              viewHolder.setIdNumber(model.getIdNumber());
-              viewHolder.setCitizenship(model.getCitizenship());
+                viewHolder.setSurName(model.getSurname());
+                viewHolder.setGender(model.getGender());
+                viewHolder.setAge(model.getAge());
+                viewHolder.setIdNumber(model.getIdNumber());
+                viewHolder.setCitizenship(model.getCitizenship());
                 viewHolder.setNumber(model.getWorkernumber());
                 viewHolder.setLocation(model.getLocation());
                 viewHolder.setExperience(model.getExperience());
                 viewHolder.setEmployer(model.getPreviousemployer());
                 viewHolder.setReferee(model.getReferee());
+                viewHolder.setDuration(model.getDuration());
                 viewHolder.setCharges(model.getCharge());
+
                 final String address = model.getWorkernumber();
                 viewHolder.clickSMS(new View.OnClickListener() {
                     @Override
@@ -186,22 +193,31 @@ public class CarpenterView extends AppCompatActivity {
                     }
                 });
 
+
             }
         };
 
-        mCarpenterList.setAdapter(FBRA);
+        mPlumberList.setAdapter(FBRA);
     }
 
-//    public static class PlumberViewHolder extends RecyclerView.ViewHolder{
-//        public PlumberViewHolder(View itemView){
+//    public static class PlumberViewHolder extends RecyclerView.ViewHolder {
+//        public PlumberViewHolder(View itemView) {
 //            super(itemView);
-//            View mView=itemView;
+//            View mView = itemView;
 //
 //        }
+//        public void clickSMS(View.OnClickListener listener) {
+//            Button sms =(Button)itemView.findViewById(R.id.message);
+//            sms.setOnClickListener(listener);
+//        }
+//        public void clickCall(View.OnClickListener listener) {
+//            Button sms =(Button)itemView.findViewById(R.id.call);
+//            sms.setOnClickListener(listener);
+//        }
 //
-//        public void setFullName(String fullname){
-//            TextView post_name=(TextView)itemView.findViewById(R.id.textName);
-//            post_name.setText(fullname);
+//        public void setFirstName(String firstname) {
+//            TextView post_name = (TextView) itemView.findViewById(R.id.textName);
+//            post_name.setText(firstname);
 //        }
 //        public void setMiddleName(String middlename){
 //            TextView post_name=(TextView)itemView.findViewById(R.id.textMiddleName);
@@ -211,44 +227,56 @@ public class CarpenterView extends AppCompatActivity {
 //            TextView post_name=(TextView)itemView.findViewById(R.id.textSurName);
 //            post_name.setText(surname);
 //        }
+//        public void setGender(String gender){
+//            TextView post_name=(TextView)itemView.findViewById(R.id.textGender);
+//            post_name.setText(gender);
+//        }
 //        public void setAge(String age){
 //            TextView post_name=(TextView)itemView.findViewById(R.id.textAge);
 //            post_name.setText(age);
 //        }
-//        public void setIdNumber(String idnumber){
+//        public void setIdNumber(String idNumber){
 //            TextView post_name=(TextView)itemView.findViewById(R.id.textId);
-//            post_name.setText(idnumber);
+//            post_name.setText(idNumber);
 //        }
 //        public void setCitizenship(String citizenship){
 //            TextView post_name=(TextView)itemView.findViewById(R.id.textCitizenship);
 //            post_name.setText(citizenship);
 //        }
-//        public void setNumber(String workernumber ){
-//            TextView post_number=(TextView)itemView.findViewById(R.id.textNumber);
+//
+//        public void setNumber(String workernumber) {
+//            TextView post_number = (TextView) itemView.findViewById(R.id.textNumber);
 //            post_number.setText(workernumber);
 //        }
-//        public void setLocation(String location){
-//            TextView post_location=(TextView)itemView.findViewById(R.id.textLocation);
+//
+//        public void setLocation(String location) {
+//            TextView post_location = (TextView) itemView.findViewById(R.id.textLocation);
 //            post_location.setText(location);
 //        }
-//        public void setExperience(String experience){
-//            TextView post_experience=(TextView)itemView.findViewById(R.id.textExperience);
+//
+//        public void setExperience(String experience) {
+//            TextView post_experience = (TextView) itemView.findViewById(R.id.textExperience);
 //            post_experience.setText(experience);
 //        }
-//        public void setEmployer(String employer){
-//            TextView post_employer=(TextView)itemView.findViewById(R.id.textEmployer);
+//
+//        public void setEmployer(String employer) {
+//            TextView post_employer = (TextView) itemView.findViewById(R.id.textEmployer);
 //            post_employer.setText(employer);
 //        }
 //        public void setReferee(String referee){
 //            TextView post_name=(TextView)itemView.findViewById(R.id.textReferee);
 //            post_name.setText(referee);
 //        }
-//        public void setCharges(String charge){
-//            TextView post_charges=(TextView)itemView.findViewById(R.id.textCharges);
+//        public void setDuration(String duration) {
+//            TextView post_charges = (TextView) itemView.findViewById(R.id.textDuration);
+//            post_charges.setText(duration);
+//        }
+//        public void setCharges(String charge) {
+//            TextView post_charges = (TextView) itemView.findViewById(R.id.textCharges);
 //            post_charges.setText(charge);
 //        }
-
-  //  }
+//
+//    }
     //search
     private void setAdapter(final String searchedString){
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -266,8 +294,9 @@ public class CarpenterView extends AppCompatActivity {
                 experienceList.clear();
                 employerList.clear();
                 refereeList.clear();
+                durationList.clear();
                 chargeList.clear();
-                mCarpenterList.removeAllViews();
+                mPlumberList.removeAllViews();
 
                 int counter=0;
 
@@ -284,6 +313,7 @@ public class CarpenterView extends AppCompatActivity {
                     String experience=snapshot.child("experience").getValue(String.class);
                     String employer=snapshot.child("previousemployer").getValue(String.class);
                     String referee=snapshot.child("referee").getValue(String.class);
+                    String duration=snapshot.child("duration").getValue(String.class);
                     String charge=snapshot.child("charge").getValue(String.class);
 
                     if(location.contains(searchedString)){
@@ -299,6 +329,7 @@ public class CarpenterView extends AppCompatActivity {
                         experienceList.add(experience);
                         employerList.add(employer);
                         refereeList.add(referee);
+                        durationList.add(duration);
                         chargeList.add(charge);
                         counter++;
                     }
@@ -306,8 +337,8 @@ public class CarpenterView extends AppCompatActivity {
                         break;
 
                 }
-                searchAdapter=new SearchAdapter(CarpenterView.this,fullNameList,middleNameList,surNameList,genderList,ageList,idNumberList,citizenshipList,phoneNumberList,locationList,experienceList,employerList,refereeList,chargeList);
-                mCarpenterList.setAdapter(searchAdapter);
+                searchAdapter=new SearchAdapter(CarpenterView.this,fullNameList,middleNameList,surNameList,genderList,ageList,idNumberList,citizenshipList,phoneNumberList,locationList,experienceList,employerList,refereeList,durationList,chargeList);
+                mPlumberList.setAdapter(searchAdapter);
             }
 
             @Override

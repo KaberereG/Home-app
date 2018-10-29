@@ -47,6 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:maxLength="10"
             android:background="@drawable/editshape"
             android:padding="5dp"/>
         <TextView
@@ -61,6 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:maxLength="10"
             android:background="@drawable/editshape"
             android:padding="5dp"/>
         <TextView
@@ -76,6 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:maxLength="10"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:background="@drawable/editshape"
             android:padding="5dp"/>
         <TextView
@@ -102,13 +108,27 @@
             android:text="Age:"
             android:textSize="18sp"
             />
+
         <EditText
             android:id="@+id/age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:ems="10"
+            android:inputType="date"
+            android:clickable="true"
             android:background="@drawable/editshape"
-            android:padding="5dp"/>
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:focusable="false"
+            android:hint="Select your date of birth"/>
+
+        <!--<EditText-->
+            <!--android:id="@+id/age"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:background="@drawable/editshape"-->
+            <!--android:padding="5dp"/>-->
         <TextView
             android:id="@+id/id"
             android:layout_width="wrap_content"
@@ -123,6 +143,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/editshape"
+            android:maxLength="10"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/citizen"
@@ -131,6 +153,13 @@
             android:layout_marginTop="25dp"
             android:text="Citizenship:"
             android:textSize="18sp"
+            />
+        <!-- Spinner Element -->
+        <Spinner
+            android:id="@+id/spinner_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             />
         <EditText
             android:id="@+id/citizenship"
@@ -155,6 +184,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:digits="0123456789+"
+            android:maxLength="13"
             android:padding="5dp" />
 
 
@@ -173,7 +204,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:inputType="textPersonName"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
 
         <TextView
@@ -191,7 +222,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:inputType="textPersonName"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+            android:inputType="textCapSentences|textMultiLine"
             android:padding="10dp" />
 
         <TextView
@@ -199,7 +231,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Referee:"
+            android:text="Referee 1:"
             android:textSize="18sp" />
         <EditText
             android:id="@+id/workerPrevEmployer"
@@ -210,7 +242,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/editshape"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
         <TextView
             android:id="@+id/textView11"
@@ -228,7 +260,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/editshape"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
 
 
@@ -240,7 +272,22 @@
             android:text="@string/salary"
             android:textSize="18sp" />
 
-
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/radio">
+            <RadioButton android:id="@+id/radio_permonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/permonth"
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton android:id="@+id/radio_perday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/perday"
+                android:onClick="onRadioButtonClicked"/>
+        </RadioGroup>
         <EditText
             android:id="@+id/charges"
             android:layout_width="match_parent"
@@ -250,6 +297,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
+            android:hint="Amount"
             android:padding="5dp" />
 
         <Button
