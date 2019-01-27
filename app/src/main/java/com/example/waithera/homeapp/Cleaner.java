@@ -103,7 +103,7 @@ public class Cleaner extends AppCompatActivity {
 
 
 //instantiating database reference and firebase auth
-        databaseReference = database.getInstance().getReference().child("CarpenterDetails");
+        databaseReference = database.getInstance().getReference().child("CleanerDetails");
         // String postKey=databaseReference.getKey();
         mAuth=FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
@@ -115,14 +115,17 @@ public class Cleaner extends AppCompatActivity {
 
     }
     public void onRadioButtonClicked(View view) {
+        onRadioButtonClickedAction();
+    }
 
+    public void onRadioButtonClickedAction(){
         int selectedId = radioGroup.getCheckedRadioButtonId();
         radioButton=(RadioButton)findViewById(selectedId);
     }
 
     public void submitButtonClicked(View view) {
-        final String postKey=databaseReference.getKey();
-        // final String workerN = workerName.getText().toString().trim();
+        onRadioButtonClickedAction();
+
         final String firstN=firstName.getText().toString().trim();
         final String middleN=middleName.getText().toString().trim();
         final String surN=surName.getText().toString().trim();
@@ -231,7 +234,6 @@ public class Cleaner extends AppCompatActivity {
 
                             if(task.isSuccessful()){
                                 Intent login=new Intent(Cleaner.this,Login.class);
-                                login.putExtra("Postid",postKey);
                                 startActivity(login);
                             }
                             else{

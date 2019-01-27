@@ -115,13 +115,16 @@ public class HouseHelp extends AppCompatActivity {
 
     }
     public void onRadioButtonClicked(View view) {
+        onRadioButtonClickedAction();
+    }
 
+    public void onRadioButtonClickedAction(){
         int selectedId = radioGroup.getCheckedRadioButtonId();
         radioButton=(RadioButton)findViewById(selectedId);
     }
 
     public void submitButtonClicked(View view) {
-        final String postKey=databaseReference.getKey();
+        onRadioButtonClickedAction();
         // final String workerN = workerName.getText().toString().trim();
         final String firstN=firstName.getText().toString().trim();
         final String middleN=middleName.getText().toString().trim();
@@ -231,7 +234,6 @@ public class HouseHelp extends AppCompatActivity {
 
                             if(task.isSuccessful()){
                                 Intent login=new Intent(HouseHelp.this,Login.class);
-                                login.putExtra("Postid",postKey);
                                 startActivity(login);
                             }
                             else{

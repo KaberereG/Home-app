@@ -2,10 +2,14 @@ package com.example.waithera.homeapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,6 +46,7 @@ public class Carpenter extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
     private String date;
+    private String ErrorMessage;
 
    private MyDobTextDatePicker ageN;
     //Spinner
@@ -55,6 +60,8 @@ public class Carpenter extends AppCompatActivity {
         setContentView(R.layout.activity_carpenter);
 
         firstName = (EditText) findViewById(R.id.firstName);
+
+
         middleName=(EditText)findViewById(R.id.middleName);
         surName=(EditText)findViewById(R.id.surName);
         workerNumber = (EditText) findViewById(R.id.workerNumber);
@@ -63,7 +70,7 @@ public class Carpenter extends AppCompatActivity {
         prevEmployerContact = (EditText) findViewById(R.id.workerPrevEmployer);
         charges = (EditText) findViewById(R.id.charges);
      //  ageN=(EditText)findViewById(R.id.age);
-        citizenship=(EditText)findViewById(R.id.citizenship);
+       // citizenship=(EditText)findViewById(R.id.citizenship);
         idNumber=(EditText)findViewById(R.id.idNumber);
         referee=(EditText)findViewById(R.id.referee);
 
@@ -124,13 +131,17 @@ radioGroup=(RadioGroup)findViewById(R.id.radio);
 
     }
     public void onRadioButtonClicked(View view) {
+        onRadioButtonClickedAction();
+    }
 
+    public void onRadioButtonClickedAction(){
         int selectedId = radioGroup.getCheckedRadioButtonId();
         radioButton=(RadioButton)findViewById(selectedId);
     }
 
     public void submitButtonClicked(View view) {
-        final String postKey=databaseReference.getKey();
+        onRadioButtonClickedAction();
+
        // final String workerN = workerName.getText().toString().trim();
         final String firstN=firstName.getText().toString().trim();
         final String middleN=middleName.getText().toString().trim();
@@ -146,14 +157,16 @@ radioGroup=(RadioGroup)findViewById(R.id.radio);
         final String ref=referee.getText().toString().trim();
         final String radio=radioButton.getText().toString().trim();
         final String charge = charges.getText().toString().trim();
-        //validation
-//        Pattern ps = Pattern.compile("^[a-zA-Z ]+$");
-//        Matcher ms = ps.matcher(firstN);
-//        boolean bs = ms.matches();
+       // validation
+
+      //  int selectedId = radioGroup.getCheckedRadioButtonId();
+
+
         if (TextUtils.isEmpty(firstN)) {
             Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
             return;
         }
+
         if (TextUtils.isEmpty(middleN)) {
             Toast.makeText(this, "Please enter your middle name", Toast.LENGTH_SHORT).show();
 
@@ -210,14 +223,14 @@ radioGroup=(RadioGroup)findViewById(R.id.radio);
 
 
         //when all fields are filled action to take is submit
-        if(!TextUtils.isEmpty(firstN)&&!TextUtils.isEmpty(middleN)&&!TextUtils.isEmpty(surN)&&!TextUtils.isEmpty(gender)&&!TextUtils.isEmpty(workerNo)&&!TextUtils.isEmpty(workerL)&&!TextUtils.isEmpty(workerE)&&!TextUtils.isEmpty(prevEmp)&&!TextUtils.isEmpty(charge)&&!TextUtils.isEmpty(age)&&! TextUtils.isEmpty(citizenShip)&&!TextUtils.isEmpty(idN)&&!TextUtils.isEmpty(ref)){
+        if(!TextUtils.isEmpty(firstN) &&!TextUtils.isEmpty(middleN)&&!TextUtils.isEmpty(surN)&&!TextUtils.isEmpty(gender)&&!TextUtils.isEmpty(workerNo)&&!TextUtils.isEmpty(workerL)&&!TextUtils.isEmpty(workerE)&&!TextUtils.isEmpty(prevEmp)&&!TextUtils.isEmpty(charge)&&!TextUtils.isEmpty(age)&&! TextUtils.isEmpty(citizenShip)&&!TextUtils.isEmpty(idN)&&!TextUtils.isEmpty(ref)){
             Toast.makeText(this,"Submitting...",Toast.LENGTH_LONG).show();
 
             final DatabaseReference newPost=databaseReference.push();
             mDatabaseUsers.addValueEventListener(new ValueEventListener() {
                 //how they shall ne
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(final DataSnapshot dataSnapshot) {
                     newPost.child("firstname").setValue(firstN);
                     newPost.child("middlename").setValue(middleN);
                     newPost.child("surname").setValue(surN);
@@ -232,16 +245,20 @@ radioGroup=(RadioGroup)findViewById(R.id.radio);
                     newPost.child("referee").setValue(ref);
                     newPost.child("duration").setValue(radio);
                     newPost.child("charge").setValue(charge);
-                    newPost.child("uid").setValue(mCurrentUser.getUid()); //to get current user uid
+                    newPost.child("uid").setValue(mCurrentUser.getUid());
+
+                    //to get current user uid
                     //aim to get the current user name of the user who has posted the above information
+                   final String key = databaseReference.push().getKey();
                     newPost.child("username").setValue(dataSnapshot.child("username").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
-                            if(task.isSuccessful()){
-                                Intent login=new Intent(Carpenter.this,Login.class);
-                               login.putExtra("Postid",postKey);
-                                startActivity(login);
+                            if(task.isSuccessful()) {
+                                Intent login = new Intent(Carpenter.this, Login.class);
+
+                                    startActivity(login);
+
                             }
                             else{
                                 String message=task.getException().getMessage();
@@ -263,4 +280,5 @@ radioGroup=(RadioGroup)findViewById(R.id.radio);
 
 
     }
+
 }

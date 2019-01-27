@@ -19,8 +19,8 @@
     <string name="close">Close</string>
     <string name="salary">Expected Salary:</string>
     <string name="forgot">Forgot password</string>
-    <string name="forgetMessage">We will mail you a link after you provide your email and click the send message.
-    Please click on that link to reset password</string>
+    <string name="forgetMessage">If you forgot your password enter your email below and click send.
+    A link to reset your password will be sent to your email.</string>
     <string name="sendEmail">Send Email</string>
     <string name="permonth">Per month</string>
     <string name="perday">Per day</string>

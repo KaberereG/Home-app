@@ -47,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:hint="Only letters allowed"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:maxLength="10"
             android:background="@drawable/editshape"
@@ -63,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:hint="Only letters allowed"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:maxLength="10"
             android:background="@drawable/editshape"
@@ -81,6 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:maxLength="10"
+            android:hint="Only letters allowed"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:background="@drawable/editshape"
             android:padding="5dp"/>
@@ -144,6 +147,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/editshape"
             android:maxLength="10"
+            android:hint="Only digits and letters allowed"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
             android:padding="5dp"/>
         <TextView
@@ -161,13 +165,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             />
-        <EditText
-            android:id="@+id/citizenship"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/editshape"
-            android:padding="5dp"/>
 
         <TextView
             android:id="@+id/worker_number"
@@ -184,6 +181,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:hint="Only digits allowed"
             android:digits="0123456789+"
             android:maxLength="13"
             android:padding="5dp" />
@@ -204,7 +202,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
+            android:hint="Only digits, letters and - allowed"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789- "
             android:padding="5dp" />
 
         <TextView
@@ -222,6 +221,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:hint="Only letters allowed"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
             android:inputType="textCapSentences|textMultiLine"
             android:padding="10dp" />
@@ -231,7 +231,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Referee 1:"
+            android:text="Referee 1 contact:"
             android:textSize="18sp" />
         <EditText
             android:id="@+id/workerPrevEmployer"
@@ -242,6 +242,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/editshape"
             android:ems="10"
+            android:hint="Only digits allowed"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
         <TextView
@@ -249,7 +250,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Referee 2:"
+            android:text="Referee 2 contact:"
             android:textSize="18sp" />
         <EditText
             android:id="@+id/referee"
@@ -260,6 +261,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/editshape"
             android:ems="10"
+            android:hint="Only digits allowed"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
             android:padding="5dp" />
 
@@ -280,6 +282,7 @@
             <RadioButton android:id="@+id/radio_permonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="@string/permonth"
                 android:onClick="onRadioButtonClicked"/>
             <RadioButton android:id="@+id/radio_perday"
@@ -298,7 +301,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
-            android:hint="Amount"
+            android:hint="Amount in kshs"
             android:padding="5dp" />
 
         <Button

@@ -1,17 +1,26 @@
 package com.example.waithera.homeapp;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Login extends AppCompatActivity implements View.OnClickListener{
+public class Login extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener{
 private Button logout,nanny,plumber,carpenter,houseHelp,cleaner,others;
 private FirebaseAuth firebaseAuth;
+    //Drawer
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,22 @@ private FirebaseAuth firebaseAuth;
         houseHelp.setOnClickListener(this);
 cleaner.setOnClickListener(this);
 others.setOnClickListener(this);
+
+//DrawerLayout
+        mDrawerLayout=(DrawerLayout)findViewById(R.id.drawerLayout);
+        NavigationView navigationView=findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        mToggle=new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -79,5 +104,19 @@ others.setOnClickListener(this);
             startActivity(o);
         }
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case (R.id.home):
+                Intent home = new Intent(this, MainActivity.class);
+                startActivity(home);
+                break;
+            case (R.id.help):
+                Intent onlineHelp = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/document/d/1_wHn8Hf40nfzw3__PpIBtorWx3o2pysXwPB8W10e4Ko/view"));
+                startActivity(onlineHelp);
+        }
+                return true;
     }
 }

@@ -20,7 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:text="Select occupations help"
+        android:text="Select occupations:"
         android:textSize="18sp" />
 
     <Button
@@ -108,7 +108,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:menu="@menu/menu"
-        android:layout_gravity="start">
+        android:layout_gravity="start"
+        android:id="@+id/nav_view">
 
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

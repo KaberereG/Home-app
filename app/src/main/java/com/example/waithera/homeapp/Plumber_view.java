@@ -235,9 +235,9 @@ if(!s.toString().isEmpty()){
             TextView post_name=(TextView)itemView.findViewById(R.id.textAge);
             post_name.setText(age);
         }
-        public void setIdNumber(String idNumber){
+        public void setIdNumber(String idnumber){
             TextView post_name=(TextView)itemView.findViewById(R.id.textIdNumber);
-            post_name.setText(idNumber);
+            post_name.setText(idnumber);
         }
         public void setCitizenship(String citizenship){
             TextView post_name=(TextView)itemView.findViewById(R.id.textCitizenship);

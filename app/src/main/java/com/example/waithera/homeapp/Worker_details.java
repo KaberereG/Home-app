@@ -114,13 +114,16 @@ public class Worker_details extends AppCompatActivity{
 
     }
     public void onRadioButtonClicked(View view) {
+        onRadioButtonClickedAction();
+    }
 
+    public void onRadioButtonClickedAction(){
         int selectedId = radioGroup.getCheckedRadioButtonId();
         radioButton=(RadioButton)findViewById(selectedId);
     }
 
     public void submitButtonClicked(View view) {
-        final String postKey=databaseReference.getKey();
+        onRadioButtonClickedAction();
         // final String workerN = workerName.getText().toString().trim();
         final String firstN=firstName.getText().toString().trim();
         final String middleN=middleName.getText().toString().trim();
@@ -230,7 +233,6 @@ public class Worker_details extends AppCompatActivity{
 
                             if(task.isSuccessful()){
                                 Intent login=new Intent(Worker_details.this,Login.class);
-                                login.putExtra("Postid",postKey);
                                 startActivity(login);
                             }
                             else{

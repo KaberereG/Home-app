@@ -1,7 +1,7 @@
 package com.example.waithera.homeapp;
 
 public class PlumberClass {
-    private String firstname,middlename,surname,gender,age,idNumber,citizenship,workernumber,location,experience,previousemployer,referee,duration,charge,username;
+    private String firstname,middlename,surname,gender,age,idnumber,citizenship,workernumber,location,experience,previousemployer,referee,duration,charge,username;
     public PlumberClass(){
 
     }
@@ -12,7 +12,7 @@ public class PlumberClass {
         this.surname=surname;
         this.gender=gender;
         this.age=age;
-        this.idNumber=idNumber;
+        this.idnumber=idNumber;
         this.citizenship=citizenship;
         this.workernumber = number;
         this.location = location;
@@ -65,11 +65,11 @@ public class PlumberClass {
     }
 
     public String getIdNumber() {
-        return idNumber;
+        return idnumber;
     }
 
     public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
+        this.idnumber = idNumber;
     }
 
     public String getCitizenship() {
